@@ -107,6 +107,7 @@
             font-size: 0.95rem;
             color: #a0aec0;
             font-weight: 500;
+            word-wrap: break-word;
         }
 
         .breadcrumb span { color: #ffffff; }
@@ -115,6 +116,7 @@
             opacity: 0.8;
             width: 80px;
             height: 80px;
+            flex-shrink: 0;
         }
 
         /* Main Content Views */
@@ -386,6 +388,7 @@
             font-size: 1.1rem;
             color: var(--text-dark);
             font-weight: 600;
+            flex-wrap: wrap;
         }
 
         .raman-input {
@@ -475,6 +478,7 @@
             color: var(--text-dark);
             font-weight: bold;
             outline: none;
+            width: 100%;
         }
         
         .grating-input-group input:focus, .grating-input-group select:focus {
@@ -557,6 +561,7 @@
             overflow: hidden;
             cursor: grab;
             border: 1px solid var(--border-gray);
+            min-height: 300px;
         }
 
         .grating-canvas-container:active {
@@ -714,7 +719,7 @@
         .equation-overview-content ul { padding: 0 0 0 20px; margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-muted); }
         .equation-overview-content li { margin-bottom: 8px; }
         .equation-overview-content .math-var { font-style: italic; font-family: 'Times New Roman', Times, serif; font-size: 1.05rem; }
-        .equation-block { text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; margin: 20px 0; color: var(--text-dark); }
+        .equation-block { text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; margin: 20px 0; color: var(--text-dark); overflow-x: auto; }
         .equation-block sub, .equation-block sup { font-size: 0.7em; }
 
         /* --- Custom Pulse Compression / Front Tilt Layout --- */
@@ -725,6 +730,7 @@
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #f1f5f9;
+            gap: 20px;
         }
 
         .simple-form-group label {
@@ -737,6 +743,7 @@
         .simple-input-container {
             width: 200px;
             position: relative;
+            flex-shrink: 0;
         }
 
         .simple-input-container input {
@@ -767,6 +774,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            gap: 20px;
         }
 
         .simple-result-group label {
@@ -787,6 +795,7 @@
             text-align: center;
             min-height: 42px;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         .chart-container {
@@ -829,21 +838,48 @@
             position: relative;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
+        /* --- RESPONSIVE DESIGN --- */
+        
+        @media (max-width: 1024px) {
             .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .hero { padding: 30px 20px; }
-            .hero-text h1 { font-size: 2rem; }
+            .calc-container { margin: 20px; padding: 30px; }
             .grating-middle-layout { grid-template-columns: 1fr; }
-            .grating-top-panel { grid-template-columns: 1fr; }
-            .simple-form-group, .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .simple-input-container, .simple-result-box { width: 100%; }
+            .grating-canvas-container { min-height: 250px; }
         }
 
-        @media (max-width: 600px) {
-            .navbar { flex-direction: column; gap: 15px; padding: 15px; }
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; padding: 15px; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .hero { padding: 30px 20px; }
+            .hero-text h1 { font-size: 2rem; }
+            .hero-icon { display: none; }
+            
             .grid-container { grid-template-columns: 1fr; }
-            .calc-container { padding: 20px; margin: 20px 10px; }
+            .form-list { grid-template-columns: 1fr; }
+            .action-buttons { grid-template-columns: 1fr; }
+            
+            .raman-grid { grid-template-columns: 1fr; gap: 20px; }
+            .raman-laser-row { flex-direction: column; align-items: flex-start; }
+            .raman-input { width: 100%; }
+            
+            .grating-top-panel { grid-template-columns: 1fr; }
+            
+            .simple-form-group { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .simple-input-container { width: 100%; }
+            
+            .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .simple-result-box { width: 100%; }
+            
+            .live-results { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 { font-size: 1.6rem; }
+            .calc-container { padding: 15px; margin: 10px; }
+            .order-grid { grid-template-columns: repeat(4, 1fr); }
+            .order-cell { font-size: 0.65rem; padding: 4px 1px; }
+            .equation-overview-content { padding: 15px; }
+            .equation-block { font-size: 1rem; }
         }
     </style>
 </head>
@@ -1772,7 +1808,7 @@
 
         function validateInputs(calc, raw) {
             const errors = {};
-            if (!calc.inputs) return errors; // custom renders handle their own
+            if (!calc.inputs) return errors; 
             
             calc.inputs.forEach(input => {
                 const group = document.getElementById('group-' + input.id);
@@ -1880,11 +1916,10 @@
             const errors = validateInputs(activeCalc, raw);
             if (Object.keys(errors).length > 0) return null;
             
-            // For custom calculators, we just return everything as valid if it made it here
             if (activeCalc.calculate) {
                 try { return { raw, results: activeCalc.calculate(raw) }; } catch (e) { return null; }
             } else {
-                return { raw, results: [] }; // Custom renders will rely on DOM values
+                return { raw, results: [] }; 
             }
         }
 
@@ -1901,7 +1936,6 @@
                     text += `  ${input.label.padEnd(32, '.')} ${displayVal}\n`;
                 });
             } else {
-                // Fallback for custom renders
                 calcPageContent.querySelectorAll('input, select').forEach(el => {
                     if (el.type === 'range') return;
                     const label = el.previousElementSibling?.textContent || el.id;
