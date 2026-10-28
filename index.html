@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technical Calculators</title>
     <style>
+        /* =====================================================================
+           CSS VARIABLES & GLOBAL STYLES
+           ===================================================================== */
         :root {
+            /* Core Brand Colors */
             --bg-white: #ffffff;
             --text-dark: #1a202c;
             --text-muted: #4a5568;
@@ -13,8 +17,12 @@
             --btn-blue: #1877E8;
             --btn-blue-hover: #125ea8;
             --accent-orange: #f7931e;
+            
+            /* Hero Banner Colors */
             --hero-bg-start: #1a2f4c;
             --hero-bg-end: #2d4d76;
+            
+            /* Validation Colors */
             --error-bg: #fed7d7;
             --error-text: #9b2c2c;
             --success-bg: #c6f6d5;
@@ -31,12 +39,14 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevents unwanted horizontal scrolling on mobile */
         }
 
         * { box-sizing: border-box; }
 
-        /* Navigation */
+        /* =====================================================================
+           NAVIGATION BAR
+           ===================================================================== */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -80,7 +90,9 @@
             font-weight: bold;
         }
 
-        /* Hero Header */
+        /* =====================================================================
+           HERO BANNER (Dark Blue Header)
+           ===================================================================== */
         .hero {
             background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
             color: white;
@@ -126,11 +138,12 @@
             flex-shrink: 0;
         }
 
-        /* Main Content Views */
+        /* =====================================================================
+           MAIN VIEWS & HOME GRID
+           ===================================================================== */
         .page-view { display: none; }
         .page-view.active-view { display: block; flex-grow: 1; }
 
-        /* Home Grid */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -169,7 +182,9 @@
             flex-grow: 1;
         }
 
-        /* Buttons */
+        /* =====================================================================
+           BUTTONS & ACTION ELEMENTS
+           ===================================================================== */
         .btn {
             display: inline-block;
             background: linear-gradient(180deg, var(--btn-blue) 0%, #125ea8 100%);
@@ -200,12 +215,14 @@
             border-radius: 3px;
         }
 
-        /* Back Button positioning */
+        /* Used for the Back button container */
         .back-btn-container {
             margin-bottom: 20px;
         }
 
-        /* Calculator View Layout */
+        /* =====================================================================
+           CALCULATOR WRAPPER & STANDARD FORM LAYOUT
+           ===================================================================== */
         #calculatorView {
             display: none;
             flex-grow: 1;
@@ -222,7 +239,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
-        /* Standard Form Layout */
+        /* Standard forms (like Spectrometer, NA) */
         .form-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -271,6 +288,7 @@
             box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
         }
 
+        /* Error states for inputs */
         .form-row input.input-invalid {
             border-color: #e53e3e;
             background-color: #fff5f5;
@@ -292,7 +310,9 @@
             line-height: 1.3;
         }
 
-        /* Standard Results */
+        /* =====================================================================
+           STANDARD RESULTS & STATUS MESSAGES
+           ===================================================================== */
         .live-results {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -328,7 +348,6 @@
             word-break: break-all;
         }
 
-        /* Status */
         .calc-status {
             padding: 10px 15px;
             border-radius: 4px;
@@ -351,6 +370,7 @@
             border: 1px solid #feb2b2;
         }
 
+        /* Reset, Copy, Export Buttons */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -377,7 +397,9 @@
             color: var(--error-text);
         }
 
-        /* --- Custom Raman Calculator Layout --- */
+        /* =====================================================================
+           CUSTOM LAYOUT: RAMAN WAVESHIFT
+           ===================================================================== */
         .raman-container {
             max-width: 800px;
             margin: 0 auto;
@@ -453,7 +475,9 @@
             gap: 10px;
         }
 
-        /* --- Custom Grating Calculator Layout --- */
+        /* =====================================================================
+           CUSTOM LAYOUT: GRATING ORDER (IBSEN STYLE)
+           ===================================================================== */
         .grating-top-panel {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -592,6 +616,7 @@
             height: 100%;
             max-height: 350px;
             display: block;
+            touch-action: none; /* Prevents scrolling ONLY on the canvas while dragging */
         }
 
         .canvas-hint {
@@ -692,7 +717,7 @@
             border-radius: 4px;
         }
 
-        /* Equation Button & Section */
+        /* Equation Overview Toggle & Content */
         .equation-btn-container {
             text-align: center;
             margin-top: 30px;
@@ -743,7 +768,9 @@
         .equation-block { text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; margin: 20px 0; color: var(--text-dark); overflow-x: auto; }
         .equation-block sub, .equation-block sup { font-size: 0.7em; }
 
-        /* --- Custom Pulse Compression / Front Tilt Layout --- */
+        /* =====================================================================
+           CUSTOM LAYOUT: PULSE COMPRESSION & FRONT TILT
+           ===================================================================== */
         .simple-form-group {
             display: flex;
             justify-content: space-between;
@@ -871,36 +898,43 @@
             display: block;
         }
 
-        /* --- RESPONSIVE DESIGN --- */
-        
+        /* =====================================================================
+           RESPONSIVE DESIGN (MEDIA QUERIES)
+           ===================================================================== */
         @media (max-width: 768px) {
+            /* Stack Navbar */
             .navbar { padding: 15px; flex-direction: column; align-items: flex-start; }
             .nav-links { flex-wrap: wrap; gap: 15px; }
             
+            /* Adjust Hero */
             .hero { padding: 30px 20px; }
             .hero-text h1 { font-size: 2rem; }
             .hero-icon { display: none; }
             
+            /* Stack standard forms */
             .calc-container { padding: 20px; margin: 15px; }
             .form-list { grid-template-columns: 1fr; }
             .live-results { grid-template-columns: 1fr; }
             .action-buttons { grid-template-columns: 1fr; }
             
+            /* Stack Raman Layout */
             .raman-grid { grid-template-columns: 1fr; gap: 20px; }
             .raman-laser-row { flex-direction: column; align-items: flex-start; gap: 10px; }
             .raman-input { width: 100%; }
             
+            /* Stack Grating Panels */
             .grating-top-panel { grid-template-columns: 1fr; }
             .grating-middle-layout { grid-template-columns: 1fr; }
             
+            /* Stack Pulse Layouts */
             .simple-form-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-input-container { width: 100%; }
-            
             .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-result-box { width: 100%; }
         }
 
         @media (max-width: 480px) {
+            /* Small mobile tweaks */
             .hero-text h1 { font-size: 1.6rem; }
             .calc-container { padding: 15px; margin: 10px; }
             .order-grid { grid-template-columns: repeat(4, 1fr); }
@@ -911,6 +945,9 @@
 </head>
 <body>
 
+    <!-- =====================================================================
+         GLOBAL NAVIGATION
+         ===================================================================== -->
     <nav class="navbar">
         <div class="nav-brand" onclick="showPage('calculators')">Technical Calculators</div>
         <ul class="nav-links">
@@ -921,7 +958,9 @@
         </ul>
     </nav>
 
-    <!-- 1. CALCULATORS PAGE -->
+    <!-- =====================================================================
+         VIEW 1: MAIN CALCULATORS LIST
+         ===================================================================== -->
     <div id="calculatorsView" class="page-view active-view">
         <div class="hero">
             <div class="hero-content">
@@ -932,12 +971,13 @@
             </div>
         </div>
 
-        <div class="grid-container" id="calculatorGrid">
-            <!-- Cards generated by JS -->
-        </div>
+        <!-- Grid populated by JS -->
+        <div class="grid-container" id="calculatorGrid"></div>
     </div>
 
-    <!-- 2. RESOURCES PAGE -->
+    <!-- =====================================================================
+         VIEW 2: RESOURCES PAGE
+         ===================================================================== -->
     <div id="resourcesView" class="page-view">
         <div class="hero">
             <div class="hero-content">
@@ -964,7 +1004,9 @@
         </div>
     </div>
 
-    <!-- 3. INDIVIDUAL CALCULATOR VIEW -->
+    <!-- =====================================================================
+         VIEW 3: INDIVIDUAL CALCULATOR VIEW (Active calculated injected here)
+         ===================================================================== -->
     <div id="calculatorView">
         <div class="hero" style="padding: 40px 20px;">
             <div class="hero-content" style="max-width: 1100px;">
@@ -987,20 +1029,22 @@
 
         <div class="calc-container">
             <div class="back-btn-container">
-                <button class="btn btn-small" style="background: white; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none;" onclick="closeCalculator()">&larr; Back to Calculators</button>
+                <!-- Uses navigateBack() to trigger browser history properly -->
+                <button class="btn btn-small" style="background: white; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none;" onclick="navigateBack()">&larr; Back to Calculators</button>
             </div>
             
-            <div id="calcPageContent">
-                <!-- Dynamic Form Injected Here -->
-            </div>
+            <!-- Dynamic content (form + results + action buttons) injected here -->
+            <div id="calcPageContent"></div>
         </div>
     </div>
 
     <script>
-        // =========================================================================
-        // 1. MATHEMATICAL LOGIC
-        // =========================================================================
+        // =====================================================================
+        // SECTION 1: CORE MATHEMATICAL LOGIC
+        // All formulas and validation checks are kept separate from UI rendering.
+        // =====================================================================
 
+        // Formats numbers nicely (max 6 sig figs, falls back to exponential for tiny/huge numbers)
         function formatNum(val) {
             if (val === 0) return '0';
             const abs = Math.abs(val);
@@ -1051,10 +1095,11 @@
             return Math.asin(arg) * 180 / Math.PI; 
         }
 
-        // =========================================================================
-        // 2. CALCULATOR CONFIGURATION
-        // =========================================================================
 
+        // =====================================================================
+        // SECTION 2: CALCULATOR CONFIGURATIONS
+        // Defines fields, defaults, and math mappings for all 6 calculators.
+        // =====================================================================
         const calculators = [
             {
                 id: 'spectrometer',
@@ -1093,7 +1138,7 @@
                 id: 'raman',
                 title: 'Raman waveshift calculator',
                 desc: 'Use this calculator to convert between wavelength in nm and wavenumber in cm⁻¹.',
-                customRender: 'raman'
+                customRender: 'raman' // Uses a special rendering function below
             },
             {
                 id: 'na-fnum',
@@ -1117,27 +1162,36 @@
                 id: 'grating',
                 title: 'Grating order calculator',
                 desc: 'Use this calculator to find the diffraction angles for a grating.',
-                customRender: 'grating'
+                customRender: 'grating' // Uses a special rendering function below
             },
             {
                 id: 'pulse-compression',
                 title: 'Pulse compression calculator',
                 desc: 'This calculator helps you design your grating pulse compressor.',
-                customRender: 'pulse-compression'
+                customRender: 'pulse-compression' // Uses a special rendering function below
             },
             {
                 id: 'pulse-front-tilt',
                 title: 'Pulse front tilt calculator',
                 desc: 'This calculator enables you to calculate pulse front tilt.',
-                customRender: 'pulse-front-tilt'
+                customRender: 'pulse-front-tilt' // Uses a special rendering function below
             }
         ];
 
-        // =========================================================================
-        // 3. RENDERING & LIVE ENGINE
-        // =========================================================================
+
+        // =====================================================================
+        // SECTION 3: NAVIGATION & BROWSER HISTORY FIX
+        // This manages the DOM state AND the URL/Browser History state.
+        // =====================================================================
 
         const grid = document.getElementById('calculatorGrid');
+        const calcView = document.getElementById('calculatorView');
+        const calcPageContent = document.getElementById('calcPageContent');
+        const calcHeroTitle = document.getElementById('calcHeroTitle');
+        const calcBreadcrumb = document.getElementById('calcBreadcrumb');
+        let activeCalc = null;
+
+        // Populate the home page grid
         calculators.forEach(calc => {
             const card = document.createElement('div');
             card.className = 'card';
@@ -1149,16 +1203,8 @@
             grid.appendChild(card);
         });
 
-        const calcView = document.getElementById('calculatorView');
-        const calcPageContent = document.getElementById('calcPageContent');
-        const calcHeroTitle = document.getElementById('calcHeroTitle');
-        const calcBreadcrumb = document.getElementById('calcBreadcrumb');
-        let activeCalc = null;
-
-        // 3D State
-        let canvas, ctx, rotX = -0.2, rotY = 0.5, isDragging = false, lastMouseX = 0, lastMouseY = 0;
-
-        function showPage(pageId) {
+        // Switch main page views (Calculators vs Resources)
+        function showPage(pageId, pushHistory = true) {
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
             calcView.style.display = 'none';
             document.getElementById(pageId + 'View').classList.add('active-view');
@@ -1167,20 +1213,29 @@
             if (pageId === 'calculators') document.getElementById('navCalcs').classList.add('active');
             if (pageId === 'resources') document.getElementById('navResources').classList.add('active');
 
+            // FIX: Update URL and browser history when navigating pages
+            if (pushHistory) {
+                const url = new URL(window.location);
+                url.searchParams.delete('calc');
+                url.searchParams.set('page', pageId);
+                history.pushState({ page: pageId }, '', url);
+            }
+            
             window.scrollTo(0, 0);
         }
 
-        function openCalculator(id) {
+        // Open a specific calculator
+        function openCalculator(id, pushHistory = true) {
             activeCalc = calculators.find(c => c.id === id);
             if (!activeCalc) return;
 
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
             calcView.style.display = 'block';
-            window.scrollTo(0, 0);
             
             calcHeroTitle.textContent = activeCalc.title;
             calcBreadcrumb.textContent = activeCalc.title;
 
+            // Route to the correct renderer
             if (activeCalc.customRender === 'raman') {
                 renderRamanCustomCalculator();
             } else if (activeCalc.customRender === 'grating') {
@@ -1193,13 +1248,76 @@
                 renderLiveCalculator(activeCalc);
             }
 
+            // Attach standard buttons (Reset/Copy/CSV) to the bottom of the injected HTML
             attachStandardActions();
+
+            // FIX: Update URL and browser history when opening a calculator
+            if (pushHistory) {
+                const url = new URL(window.location);
+                url.searchParams.set('calc', id);
+                url.searchParams.delete('page');
+                history.pushState({ calc: id }, '', url);
+            }
+            
+            window.scrollTo(0, 0);
         }
 
+        // FIX: Custom Back Button Logic for safe navigation
+        function navigateBack() {
+            // If we have a history state, go back naturally
+            if (window.history.state && window.history.state.calc) {
+                history.back(); // This will trigger the 'popstate' listener
+            } else {
+                // Safe fallback if the user pasted a URL directly
+                const url = new URL(window.location);
+                url.searchParams.delete('calc');
+                url.searchParams.set('page', 'calculators');
+                history.replaceState({ page: 'calculators' }, '', url);
+                showPage('calculators', false);
+            }
+        }
+
+        // Deprecated fallback close function
+        function closeCalculator() {
+            const url = new URL(window.location);
+            url.searchParams.delete('calc');
+            url.searchParams.set('page', 'calculators');
+            history.pushState({ page: 'calculators' }, '', url);
+            
+            activeCalc = null;
+            calcView.style.display = 'none';
+            showPage('calculators', false);
+            window.scrollTo(0, 0);
+        }
+
+        // FIX: Listen to native browser Back/Forward buttons (and trackpad swipes)
+        window.addEventListener('popstate', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const calcId = urlParams.get('calc');
+            const pageId = urlParams.get('page');
+
+            if (calcId && calculators.find(c => c.id === calcId)) {
+                // Re-render the calculator WITHOUT pushing a new history state
+                openCalculator(calcId, false); 
+            } else {
+                // Re-render the main page WITHOUT pushing a new history state
+                activeCalc = null;
+                if (pageId === 'resources') {
+                    showPage('resources', false);
+                } else {
+                    showPage('calculators', false);
+                }
+            }
+        });
+
+        // =====================================================================
+        // SECTION 4: SHARED RENDERING & VALIDATION ENGINE (FOR STANDARD FORMS)
+        // =====================================================================
         function attachStandardActions() {
             const container = document.getElementById('calcPageContent');
             if (!container) return;
             
+            // Add the Status Bar and Action Buttons underneath the calculator form
             const footerHTML = `
                 <div class="calc-status" id="calc-status" role="status" aria-live="polite"></div>
                 <div class="action-buttons">
@@ -1216,13 +1334,6 @@
             document.getElementById('btn-csv').addEventListener('click', exportCSV);
         }
 
-        function closeCalculator() {
-            clearTimeout(window._actionFeedbackTimer);
-            activeCalc = null;
-            calcView.style.display = 'none';
-            showPage('calculators');
-        }
-
         function updateStatus(isSuccess) {
             const status = document.getElementById('calc-status');
             if (!status) return;
@@ -1235,7 +1346,124 @@
             }
         }
 
-        // --- CUSTOM RAMAN RENDERER ---
+        // Standard form renderer for simple calculators (Spectrometer, NA)
+        function renderLiveCalculator(calc) {
+            let formHTML = '<div class="form-list">';
+            calc.inputs.forEach(input => {
+                const dependsAttr = input.dependsOn ? `data-depends-on="${input.dependsOn.id}" data-depends-val="${input.dependsOn.val}"` : '';
+                formHTML += `<div class="form-row" id="group-${input.id}" ${dependsAttr}>`;
+                formHTML += `<label for="input-${input.id}">${input.label}</label>`;
+                formHTML += `<div class="input-wrapper">`;
+                if (input.type === 'select') {
+                    formHTML += `<select id="input-${input.id}" data-id="${input.id}">`;
+                    input.options.forEach(opt => formHTML += `<option value="${opt.val}">${opt.text}</option>`);
+                    formHTML += `</select>`;
+                } else {
+                    formHTML += `<input type="number" id="input-${input.id}" data-id="${input.id}" step="any" value="${input.val}">`;
+                }
+                if (input.hasButton) formHTML += `<button type="button" class="btn btn-small" style="background: #f1f5f9; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none; white-space: nowrap;">convert</button>`;
+                formHTML += `</div>`;
+                if (input.helper) formHTML += `<div class="input-helper">${input.helper}</div>`;
+                formHTML += `<div class="field-error" id="error-${input.id}" role="alert" aria-live="polite"></div>`;
+                formHTML += `</div>`;
+            });
+            formHTML += '</div>';
+
+            calcPageContent.innerHTML = `
+                ${formHTML}
+                <div class="live-results" id="results-container"></div>
+            `;
+
+            const inputElements = calcPageContent.querySelectorAll('input, select');
+            inputElements.forEach(el => el.addEventListener('input', () => { updateVisibility(calc); liveCalculate(calc); }));
+
+            updateVisibility(calc);
+            liveCalculate(calc);
+        }
+
+        function updateVisibility(calc) {
+            calc.inputs.forEach(input => {
+                if (!input.dependsOn) return;
+                const controller = document.getElementById('input-' + input.dependsOn.id);
+                const group = document.getElementById('group-' + input.id);
+                if (controller && group) group.style.display = controller.value === input.dependsOn.val ? 'flex' : 'none';
+            });
+        }
+
+        function getRawValues() {
+            const raw = {};
+            calcPageContent.querySelectorAll('input, select').forEach(el => {
+                const id = el.dataset.id || el.id;
+                if(id) raw[id] = el.type === 'number' ? (el.value.trim() === '' ? NaN : parseFloat(el.value)) : el.value;
+            });
+            return raw;
+        }
+
+        function validateInputs(calc, raw) {
+            const errors = {};
+            if (!calc.inputs) return errors; 
+            
+            calc.inputs.forEach(input => {
+                const group = document.getElementById('group-' + input.id);
+                if (group && group.style.display === 'none') return; 
+                const val = raw[input.id];
+                const errEl = document.getElementById('error-' + input.id);
+                const inputEl = document.getElementById('input-' + input.id);
+                let errorMsg = '';
+                if (input.type === 'number') {
+                    if (Number.isNaN(val)) errorMsg = 'Required';
+                    else if (!Number.isFinite(val)) errorMsg = 'Invalid number';
+                    else if (!input.allowNegative && val < 0) errorMsg = 'Cannot be negative';
+                    else if (input.id !== 'littrow' && input.id !== 'diffAngle785' && input.id !== 'diffAngle942' && input.id !== 'diffAngle1100' && val === 0) errorMsg = 'Must be > 0';
+                }
+                if (errorMsg) {
+                    errors[input.id] = errorMsg;
+                    if (errEl) errEl.textContent = errorMsg;
+                    if (inputEl) { inputEl.classList.add('input-invalid'); inputEl.setAttribute('aria-invalid', 'true'); }
+                } else {
+                    if (errEl) errEl.textContent = '';
+                    if (inputEl) { inputEl.classList.remove('input-invalid'); inputEl.removeAttribute('aria-invalid'); }
+                }
+            });
+            return errors;
+        }
+
+        function liveCalculate(calc) {
+            const fb = document.getElementById('action-feedback'); if (fb) fb.className = 'action-feedback';
+            const raw = getRawValues();
+            const errors = validateInputs(calc, raw);
+            const resultsContainer = document.getElementById('results-container');
+            
+            if (Object.keys(errors).length > 0) {
+                if(resultsContainer) resultsContainer.innerHTML = '';
+                updateStatus(false);
+                return;
+            }
+
+            try {
+                const results = calc.calculate(raw);
+                if(resultsContainer) {
+                    resultsContainer.innerHTML = results.map(res => `
+                        <div class="result-card">
+                            <div class="result-label">${res.label}</div>
+                            <div class="result-value">${res.value}</div>
+                        </div>
+                    `).join('');
+                }
+                updateStatus(true);
+            } catch (err) {
+                if(resultsContainer) resultsContainer.innerHTML = '';
+                updateStatus(false);
+            }
+        }
+
+
+        // =====================================================================
+        // SECTION 5: CUSTOM CALCULATOR RENDERERS
+        // These calculators have specific UI layouts and handle their own math.
+        // =====================================================================
+
+        // --- RAMAN CUSTOM RENDERER ---
         function renderRamanCustomCalculator() {
             const html = `
                 <div class="raman-container">
@@ -1319,7 +1547,7 @@
         }
 
 
-        // --- CUSTOM GRATING RENDERER ---
+        // --- GRATING CUSTOM RENDERER ---
         function renderGratingCustomCalculator() {
             const html = `
                 <div class="grating-wrapper">
@@ -1412,10 +1640,14 @@
         function toggleEquations() { document.getElementById('equation-overview').classList.toggle('active'); }
 
         // 3D Logic for Grating
+        let canvas, ctx, rotX = -0.2, rotY = 0.5, isDragging = false, lastMouseX = 0, lastMouseY = 0;
+        
         function init3DCanvas() {
             canvas = document.getElementById('grating-canvas'); ctx = canvas.getContext('2d');
             const resizeCanvas = () => { const c = document.getElementById('canvas-container'); canvas.width = c.clientWidth; canvas.height = c.clientHeight; drawScene(); };
             window.addEventListener('resize', resizeCanvas); resizeCanvas();
+            
+            // Mouse Events
             canvas.addEventListener('mousedown', (e) => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
@@ -1423,12 +1655,24 @@
                 lastMouseX = e.clientX; lastMouseY = e.clientY; drawScene();
             });
             window.addEventListener('mouseup', () => isDragging = false);
-            canvas.addEventListener('touchstart', (e) => { isDragging = true; lastMouseX = e.touches[0].clientX; lastMouseY = e.touches[0].clientY; });
-            window.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                rotY += (e.touches[0].clientX - lastMouseX) * 0.01; rotX += (e.touches[0].clientY - lastMouseY) * 0.01;
-                lastMouseX = e.touches[0].clientX; lastMouseY = e.touches[0].clientY; drawScene(); e.preventDefault();
+
+            // Touch Events (Scoped strictly to canvas to avoid blocking browser swipe gestures)
+            canvas.addEventListener('touchstart', (e) => { 
+                isDragging = true; 
+                lastMouseX = e.touches[0].clientX; 
+                lastMouseY = e.touches[0].clientY; 
             }, { passive: false });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                rotY += (e.touches[0].clientX - lastMouseX) * 0.01; 
+                rotX += (e.touches[0].clientY - lastMouseY) * 0.01;
+                lastMouseX = e.touches[0].clientX; 
+                lastMouseY = e.touches[0].clientY; 
+                drawScene(); 
+                e.preventDefault(); // Only prevents default on the canvas element itself
+            }, { passive: false });
+            
             window.addEventListener('touchend', () => isDragging = false);
         }
 
@@ -1781,121 +2025,9 @@
         }
 
 
-        // --- STANDARD RENDERER (For other calculators) ---
-        function renderLiveCalculator(calc) {
-            let formHTML = '<div class="form-list">';
-            calc.inputs.forEach(input => {
-                const dependsAttr = input.dependsOn ? `data-depends-on="${input.dependsOn.id}" data-depends-val="${input.dependsOn.val}"` : '';
-                formHTML += `<div class="form-row" id="group-${input.id}" ${dependsAttr}>`;
-                formHTML += `<label for="input-${input.id}">${input.label}</label>`;
-                formHTML += `<div class="input-wrapper">`;
-                if (input.type === 'select') {
-                    formHTML += `<select id="input-${input.id}" data-id="${input.id}">`;
-                    input.options.forEach(opt => formHTML += `<option value="${opt.val}">${opt.text}</option>`);
-                    formHTML += `</select>`;
-                } else {
-                    formHTML += `<input type="number" id="input-${input.id}" data-id="${input.id}" step="any" value="${input.val}">`;
-                }
-                if (input.hasButton) formHTML += `<button type="button" class="btn btn-small" style="background: #f1f5f9; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none; white-space: nowrap;">convert</button>`;
-                formHTML += `</div>`;
-                if (input.helper) formHTML += `<div class="input-helper">${input.helper}</div>`;
-                formHTML += `<div class="field-error" id="error-${input.id}" role="alert" aria-live="polite"></div>`;
-                formHTML += `</div>`;
-            });
-            formHTML += '</div>';
-
-            calcPageContent.innerHTML = `
-                ${formHTML}
-                <div class="live-results" id="results-container"></div>
-            `;
-
-            const inputElements = calcPageContent.querySelectorAll('input, select');
-            inputElements.forEach(el => el.addEventListener('input', () => { updateVisibility(calc); liveCalculate(calc); }));
-
-            updateVisibility(calc);
-            liveCalculate(calc);
-        }
-
-        function updateVisibility(calc) {
-            calc.inputs.forEach(input => {
-                if (!input.dependsOn) return;
-                const controller = document.getElementById('input-' + input.dependsOn.id);
-                const group = document.getElementById('group-' + input.id);
-                if (controller && group) group.style.display = controller.value === input.dependsOn.val ? 'flex' : 'none';
-            });
-        }
-
-        function getRawValues() {
-            const raw = {};
-            calcPageContent.querySelectorAll('input, select').forEach(el => {
-                const id = el.dataset.id || el.id;
-                if(id) raw[id] = el.type === 'number' ? (el.value.trim() === '' ? NaN : parseFloat(el.value)) : el.value;
-            });
-            return raw;
-        }
-
-        function validateInputs(calc, raw) {
-            const errors = {};
-            if (!calc.inputs) return errors; 
-            
-            calc.inputs.forEach(input => {
-                const group = document.getElementById('group-' + input.id);
-                if (group && group.style.display === 'none') return; 
-                const val = raw[input.id];
-                const errEl = document.getElementById('error-' + input.id);
-                const inputEl = document.getElementById('input-' + input.id);
-                let errorMsg = '';
-                if (input.type === 'number') {
-                    if (Number.isNaN(val)) errorMsg = 'Required';
-                    else if (!Number.isFinite(val)) errorMsg = 'Invalid number';
-                    else if (!input.allowNegative && val < 0) errorMsg = 'Cannot be negative';
-                    else if (input.id !== 'littrow' && input.id !== 'diffAngle785' && input.id !== 'diffAngle942' && input.id !== 'diffAngle1100' && val === 0) errorMsg = 'Must be > 0';
-                }
-                if (errorMsg) {
-                    errors[input.id] = errorMsg;
-                    if (errEl) errEl.textContent = errorMsg;
-                    if (inputEl) { inputEl.classList.add('input-invalid'); inputEl.setAttribute('aria-invalid', 'true'); }
-                } else {
-                    if (errEl) errEl.textContent = '';
-                    if (inputEl) { inputEl.classList.remove('input-invalid'); inputEl.removeAttribute('aria-invalid'); }
-                }
-            });
-            return errors;
-        }
-
-        function liveCalculate(calc) {
-            const fb = document.getElementById('action-feedback'); if (fb) fb.className = 'action-feedback';
-            const raw = getRawValues();
-            const errors = validateInputs(calc, raw);
-            const resultsContainer = document.getElementById('results-container');
-            
-            if (Object.keys(errors).length > 0) {
-                if(resultsContainer) resultsContainer.innerHTML = '';
-                updateStatus(false);
-                return;
-            }
-
-            try {
-                const results = calc.calculate(raw);
-                if(resultsContainer) {
-                    resultsContainer.innerHTML = results.map(res => `
-                        <div class="result-card">
-                            <div class="result-label">${res.label}</div>
-                            <div class="result-value">${res.value}</div>
-                        </div>
-                    `).join('');
-                }
-                updateStatus(true);
-            } catch (err) {
-                if(resultsContainer) resultsContainer.innerHTML = '';
-                updateStatus(false);
-            }
-        }
-
-        // =========================================================================
-        // 4. ACTIONS
-        // =========================================================================
-
+        // =====================================================================
+        // SECTION 6: UTILITY ACTIONS (Reset, Copy, Export)
+        // =====================================================================
         function showFeedback(msg, type) {
             const fb = document.getElementById('action-feedback');
             if (!fb) return;
@@ -2035,6 +2167,25 @@
             document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
             showFeedback('✓ CSV exported.', 'success');
         }
+
+        // =====================================================================
+        // SECTION 7: INITIALIZATION
+        // Check the URL parameters on page load to handle direct links safely.
+        // =====================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const calcId = urlParams.get('calc');
+            const pageId = urlParams.get('page');
+
+            if (calcId && calculators.find(c => c.id === calcId)) {
+                // If the page loaded with ?calc=raman, open it immediately
+                openCalculator(calcId, false);
+            } else if (pageId === 'resources') {
+                // If the page loaded with ?page=resources, show resources
+                showPage('resources', false);
+            }
+            // Otherwise, it defaults to the main calculators view (HTML default)
+        });
     </script>
 </body>
 </html>
