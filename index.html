@@ -388,7 +388,7 @@
         }
 
         /* =====================================================================
-           NEW PROFESSIONAL RESOURCES PAGE STYLES
+           PROFESSIONAL RESOURCES PAGE STYLES
            ===================================================================== */
         .docs-layout {
             display: flex;
@@ -469,7 +469,7 @@
         /* Right Content Area */
         .docs-content {
             flex-grow: 1;
-            min-width: 0; /* Prevents flexbox overflow */
+            min-width: 0; 
         }
 
         .doc-section {
@@ -627,7 +627,7 @@
         }
 
         /* =====================================================================
-           CUSTOM LAYOUT: RAMAN, GRATING, PULSE (Abbreviated for this file)
+           CUSTOM LAYOUTS
            ===================================================================== */
         .raman-container { max-width: 800px; margin: 0 auto; }
         .raman-title { color: var(--text-dark); font-size: 1.5rem; font-weight: 700; margin-top: 0; margin-bottom: 30px; border-bottom: 2px solid var(--border-gray); padding-bottom: 10px; }
@@ -771,9 +771,10 @@
                     <option value="">Jump to section...</option>
                     <option value="sec-spectrometer">1. Spectrometer Designer</option>
                     <option value="sec-raman">2. Raman Waveshift</option>
-                    <option value="sec-grating">3. Grating Order</option>
-                    <option value="sec-pulse-comp">4. Pulse Compression</option>
-                    <option value="sec-pulse-tilt">5. Pulse Front Tilt</option>
+                    <option value="sec-na">3. NA to f-number</option>
+                    <option value="sec-grating">4. Grating Order</option>
+                    <option value="sec-pulse-comp">5. Pulse Compression</option>
+                    <option value="sec-pulse-tilt">6. Pulse Front Tilt</option>
                 </select>
             </div>
 
@@ -785,9 +786,10 @@
                     <ul class="toc-list" id="tocList">
                         <li><a href="#sec-spectrometer" class="active">1. Spectrometer Designer</a></li>
                         <li><a href="#sec-raman">2. Raman Waveshift</a></li>
-                        <li><a href="#sec-grating">3. Grating Order</a></li>
-                        <li><a href="#sec-pulse-comp">4. Pulse Compression</a></li>
-                        <li><a href="#sec-pulse-tilt">5. Pulse Front Tilt</a></li>
+                        <li><a href="#sec-na">3. NA to f-number</a></li>
+                        <li><a href="#sec-grating">4. Grating Order</a></li>
+                        <li><a href="#sec-pulse-comp">5. Pulse Compression</a></li>
+                        <li><a href="#sec-pulse-tilt">6. Pulse Front Tilt</a></li>
                     </ul>
                 </div>
             </aside>
@@ -795,7 +797,7 @@
             <!-- Main Documentation Content -->
             <main class="docs-content" id="docsContent">
                 
-                <!-- Spectrometer -->
+                <!-- 1. Spectrometer -->
                 <div class="doc-section" id="sec-spectrometer">
                     <div class="doc-header">
                         <div class="doc-icon">1</div>
@@ -829,7 +831,7 @@
                     </div>
                 </div>
 
-                <!-- Raman -->
+                <!-- 2. Raman -->
                 <div class="doc-section" id="sec-raman">
                     <div class="doc-header">
                         <div class="doc-icon">2</div>
@@ -860,10 +862,40 @@
                     </div>
                 </div>
 
-                <!-- Grating -->
-                <div class="doc-section" id="sec-grating">
+                <!-- 3. NA to f-number -->
+                <div class="doc-section" id="sec-na">
                     <div class="doc-header">
                         <div class="doc-icon">3</div>
+                        <h2>NA to f-number Converter</h2>
+                    </div>
+                    <p class="doc-desc">This calculator converts between numerical aperture (NA) and f-number (N). Numerical aperture describes the range of angles over which the system can accept or emit light, while the f-number describes the ratio of focal length to aperture diameter.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">N = 1 / (2 &times; NA)</div>
+                        <button class="copy-btn" onclick="copyFormula('N = 1 / (2 * NA)', this)">Copy</button>
+                    </div>
+                    <div class="formula-panel">
+                        <div class="formula-content">NA = 1 / (2 &times; N)</div>
+                        <button class="copy-btn" onclick="copyFormula('NA = 1 / (2 * N)', this)">Copy</button>
+                    </div>
+
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">NA</span> Numerical Aperture (dimensionless)</div>
+                        <div class="var-item"><span class="var-symbol">N</span> f-number (dimensionless)</div>
+                    </div>
+                    
+                    <div class="warning-callout">
+                        <div class="warning-icon">⚠️</div>
+                        <div><strong>Note on Approximation:</strong> These equations assume an air-based optical convention (refractive index ≈ 1). For systems immersed in other media, NA must be multiplied by the refractive index of the medium.</div>
+                    </div>
+                </div>
+
+                <!-- 4. Grating -->
+                <div class="doc-section" id="sec-grating">
+                    <div class="doc-header">
+                        <div class="doc-icon">4</div>
                         <h2>Grating Order Calculator</h2>
                     </div>
                     <p class="doc-desc">Diffraction gratings disperse light into multiple orders based on the grating equation. This calculator determines the diffraction angle for a specific order and wavelength, and verifies if the order is physically propagating.</p>
@@ -893,10 +925,10 @@
                     </div>
                 </div>
 
-                <!-- Pulse Compression -->
+                <!-- 5. Pulse Compression -->
                 <div class="doc-section" id="sec-pulse-comp">
                     <div class="doc-header">
-                        <div class="doc-icon">4</div>
+                        <div class="doc-icon">5</div>
                         <h2>Pulse Compression Calculator</h2>
                     </div>
                     <p class="doc-desc">In ultrafast optics, grating pairs are used to compress chirped laser pulses. This calculator determines the Group Delay Dispersion (GDD) introduced by a grating pair in a double-pass configuration.</p>
@@ -923,10 +955,10 @@
                     </div>
                 </div>
 
-                <!-- Pulse Front Tilt -->
+                <!-- 6. Pulse Front Tilt -->
                 <div class="doc-section" id="sec-pulse-tilt">
                     <div class="doc-header">
-                        <div class="doc-icon">5</div>
+                        <div class="doc-icon">6</div>
                         <h2>Pulse Front Tilt Calculator</h2>
                     </div>
                     <p class="doc-desc">When a pulse passes through a diffraction grating, the pulse front becomes tilted relative to the phase front. This calculator determines the required incidence and diffraction angles to achieve a specific pulse front tilt angle.</p>
@@ -2079,10 +2111,9 @@
 
 
         // =====================================================================
-        // SECTION 7: DOCUMENTATION SPECIFIC LOGIC (Search, TOC, Copy)
+        // SECTION 7: DOCUMENTATION SPECIFIC LOGIC
         // =====================================================================
         
-        // Copy formula function
         function copyFormula(text, btnElement) {
             navigator.clipboard.writeText(text).then(() => {
                 const originalText = btnElement.textContent;
@@ -2101,7 +2132,6 @@
             });
         }
 
-        // Scroll to section from mobile dropdown
         function scrollToSection(id) {
             if (!id) return;
             const el = document.getElementById(id);
@@ -2110,7 +2140,6 @@
             }
         }
 
-        // Search filter logic
         function filterDocs() {
             const query = document.getElementById('docSearch').value.toLowerCase();
             const sections = document.querySelectorAll('.doc-section');
@@ -2125,7 +2154,6 @@
             });
         }
 
-        // Highlight active TOC link on scroll
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('.doc-section');
             const tocLinks = document.querySelectorAll('.toc-list a');
