@@ -9,8 +9,8 @@
            CSS VARIABLES & GLOBAL STYLES
            ===================================================================== */
         :root {
-            /* Core Brand Colors */
             --bg-white: #ffffff;
+            --bg-light: #f9fbfd;
             --text-dark: #1a202c;
             --text-muted: #4a5568;
             --border-gray: #DDE2E8;
@@ -18,11 +18,9 @@
             --btn-blue-hover: #125ea8;
             --accent-orange: #f7931e;
             
-            /* Hero Banner Colors */
             --hero-bg-start: #1a2f4c;
             --hero-bg-end: #2d4d76;
             
-            /* Validation Colors */
             --error-bg: #fed7d7;
             --error-text: #9b2c2c;
             --success-bg: #c6f6d5;
@@ -39,7 +37,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevents unwanted horizontal scrolling on mobile */
+            overflow-x: hidden;
         }
 
         * { box-sizing: border-box; }
@@ -91,7 +89,7 @@
         }
 
         /* =====================================================================
-           HERO BANNER (Dark Blue Header)
+           HERO BANNER
            ===================================================================== */
         .hero {
             background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
@@ -215,7 +213,6 @@
             border-radius: 3px;
         }
 
-        /* Used for the Back button container */
         .back-btn-container {
             margin-bottom: 20px;
         }
@@ -226,7 +223,7 @@
         #calculatorView {
             display: none;
             flex-grow: 1;
-            background-color: #f9fbfd;
+            background-color: var(--bg-light);
         }
 
         .calc-container {
@@ -239,7 +236,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
-        /* Standard forms (like Spectrometer, NA) */
         .form-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -288,7 +284,6 @@
             box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
         }
 
-        /* Error states for inputs */
         .form-row input.input-invalid {
             border-color: #e53e3e;
             background-color: #fff5f5;
@@ -370,7 +365,6 @@
             border: 1px solid #feb2b2;
         }
 
-        /* Reset, Copy, Export Buttons */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -395,6 +389,96 @@
         .action-feedback.error {
             background-color: var(--error-bg);
             color: var(--error-text);
+        }
+
+        /* =====================================================================
+           NEW PROFESSIONAL RESOURCES PAGE STYLES
+           ===================================================================== */
+        .resources-container {
+            max-width: 900px;
+            margin: 50px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .resource-section {
+            background: #ffffff;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .resource-section h2 {
+            color: var(--text-dark);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border-gray);
+            padding-bottom: 10px;
+        }
+
+        .resource-section h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .resource-section p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        .formula-block {
+            background-color: #f7fafc;
+            border-left: 4px solid var(--btn-blue);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .variable-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .variable-list li {
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-gray);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .variable-list strong {
+            color: var(--text-dark);
+            font-style: italic;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.1rem;
+            margin-right: 5px;
+        }
+
+        .note-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid var(--accent-orange);
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.95rem;
+            color: #92400e;
+            margin-top: 20px;
         }
 
         /* =====================================================================
@@ -616,7 +700,7 @@
             height: 100%;
             max-height: 350px;
             display: block;
-            touch-action: none; /* Prevents scrolling ONLY on the canvas while dragging */
+            touch-action: none;
         }
 
         .canvas-hint {
@@ -716,57 +800,6 @@
             background: #f7fafc;
             border-radius: 4px;
         }
-
-        /* Equation Overview Toggle & Content */
-        .equation-btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .equation-btn {
-            background-color: var(--text-dark);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .equation-btn:hover {
-            background-color: #000;
-        }
-
-        .equation-overview-content {
-            display: none;
-            background-color: var(--bg-white);
-            border-radius: 6px;
-            padding: 30px;
-            margin-top: 20px;
-            border: 1px solid var(--border-gray);
-            color: var(--text-dark);
-        }
-
-        .equation-overview-content.active {
-            display: block;
-        }
-
-        .equation-overview-content h4 {
-            color: var(--text-dark);
-            margin-top: 25px;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .equation-overview-content h4:first-child { margin-top: 0; }
-        .equation-overview-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
-        .equation-overview-content ul { padding: 0 0 0 20px; margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-muted); }
-        .equation-overview-content li { margin-bottom: 8px; }
-        .equation-overview-content .math-var { font-style: italic; font-family: 'Times New Roman', Times, serif; font-size: 1.05rem; }
-        .equation-block { text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; margin: 20px 0; color: var(--text-dark); overflow-x: auto; }
-        .equation-block sub, .equation-block sup { font-size: 0.7em; }
 
         /* =====================================================================
            CUSTOM LAYOUT: PULSE COMPRESSION & FRONT TILT
@@ -899,42 +932,38 @@
         }
 
         /* =====================================================================
-           RESPONSIVE DESIGN (MEDIA QUERIES)
+           RESPONSIVE DESIGN
            ===================================================================== */
         @media (max-width: 768px) {
-            /* Stack Navbar */
             .navbar { padding: 15px; flex-direction: column; align-items: flex-start; }
             .nav-links { flex-wrap: wrap; gap: 15px; }
             
-            /* Adjust Hero */
             .hero { padding: 30px 20px; }
             .hero-text h1 { font-size: 2rem; }
             .hero-icon { display: none; }
             
-            /* Stack standard forms */
             .calc-container { padding: 20px; margin: 15px; }
             .form-list { grid-template-columns: 1fr; }
             .live-results { grid-template-columns: 1fr; }
             .action-buttons { grid-template-columns: 1fr; }
             
-            /* Stack Raman Layout */
             .raman-grid { grid-template-columns: 1fr; gap: 20px; }
             .raman-laser-row { flex-direction: column; align-items: flex-start; gap: 10px; }
             .raman-input { width: 100%; }
             
-            /* Stack Grating Panels */
             .grating-top-panel { grid-template-columns: 1fr; }
             .grating-middle-layout { grid-template-columns: 1fr; }
             
-            /* Stack Pulse Layouts */
             .simple-form-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-input-container { width: 100%; }
             .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-result-box { width: 100%; }
+
+            .resources-container { margin: 20px auto; padding: 0 15px; }
+            .resource-section { padding: 20px; }
         }
 
         @media (max-width: 480px) {
-            /* Small mobile tweaks */
             .hero-text h1 { font-size: 1.6rem; }
             .calc-container { padding: 15px; margin: 10px; }
             .order-grid { grid-template-columns: repeat(4, 1fr); }
@@ -953,8 +982,6 @@
         <ul class="nav-links">
             <li><a onclick="showPage('calculators')" id="navCalcs" class="active">Calculators</a></li>
             <li><a onclick="showPage('resources')" id="navResources">Resources</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
@@ -966,53 +993,166 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>Calculators</h1>
-                    <div class="breadcrumb">Home / Resources / <span>Calculators</span></div>
+                    <div class="breadcrumb">Home / <span>Calculators</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- Grid populated by JS -->
         <div class="grid-container" id="calculatorGrid"></div>
     </div>
 
     <!-- =====================================================================
-         VIEW 2: RESOURCES PAGE
+         VIEW 2: PROFESSIONAL RESOURCES PAGE
          ===================================================================== -->
     <div id="resourcesView" class="page-view">
         <div class="hero">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Resources</h1>
+                    <h1>Resources & Documentation</h1>
                     <div class="breadcrumb">Home / <span>Resources</span></div>
                 </div>
             </div>
         </div>
         
-        <div style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
-            <h2>Optics & Spectroscopy Guides</h2>
-            <p style="color: var(--text-muted); font-size: 1.05rem;">Explore helpful documentation, scientific references, and formulas used in our calculators.</p>
+        <div class="resources-container">
             
-            <div style="background: #f8fafc; border: 1px solid var(--border-gray); border-left: 4px solid var(--accent-orange); padding: 20px; border-radius: 0 6px 6px 0; margin-bottom: 20px;">
-                <h3 style="margin-top: 0;">Spectrometer Design Guide</h3>
-                <p style="margin-bottom: 0; color: var(--text-muted);">Understand how focal length, angular dispersion, and grating width affect resolving power. The fundamental equation is <strong>R = W × (dβ/dλ)</strong>.</p>
+            <!-- Spectrometer Section -->
+            <div class="resource-section">
+                <h2>1. Spectrometer Designer</h2>
+                <p>This calculator is used to estimate the critical optical parameters of a spectrometer based on its grating and focal length. It helps optical engineers determine the linear dispersion at the detector and the overall resolving power of the system.</p>
+                
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-block">
+                    dx = f &times; (d&beta;/d&lambda;) &times; &Delta;&lambda;
+                </div>
+                <div class="formula-block">
+                    R = W &times; (d&beta;/d&lambda;)
+                </div>
+
+                <h3>Variable Definitions</h3>
+                <ul class="variable-list">
+                    <li><strong>dx</strong> Linear dispersion at the focal plane (mm)</li>
+                    <li><strong>f</strong> Focal length of the collimator/focusing mirror (mm)</li>
+                    <li><strong>d&beta;/d&lambda;</strong> Angular dispersion of the grating (rad/nm)</li>
+                    <li><strong>&Delta;&lambda;</strong> Wavelength interval being resolved (nm)</li>
+                    <li><strong>R</strong> Resolving power (dimensionless)</li>
+                    <li><strong>W</strong> Illuminated grating width (nm)</li>
+                </ul>
+                <div class="note-box">
+                    <strong>Note on Units:</strong> For resolving power (R) to be dimensionless, the illuminated width W must be expressed in the same unit as the wavelength (nanometers).
+                </div>
             </div>
-            
-            <div style="background: #f8fafc; border: 1px solid var(--border-gray); border-left: 4px solid var(--accent-orange); padding: 20px; border-radius: 0 6px 6px 0; margin-bottom: 20px;">
-                <h3 style="margin-top: 0;">Raman Spectroscopy Primer</h3>
-                <p style="margin-bottom: 0; color: var(--text-muted);">Learn the difference between Stokes and anti-Stokes scattering. A positive Raman shift indicates Stokes scattering, while a negative shift indicates anti-Stokes.</p>
+
+            <!-- Raman Section -->
+            <div class="resource-section">
+                <h2>2. Raman Waveshift Converter</h2>
+                <p>Raman spectroscopy relies on the inelastic scattering of light. This calculator converts between the wavelength of scattered light (in nanometers) and the Raman shift (in wavenumbers). Positive shifts indicate Stokes scattering, while negative shifts indicate anti-Stokes scattering.</p>
+                
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-block">
+                    &Delta;&nu;&#771; = 10<sup>7</sup> &times; (1/&lambda;<sub>0</sub> &minus; 1/&lambda;<sub>R</sub>)
+                </div>
+                <div class="formula-block">
+                    &lambda;<sub>R</sub> = 1 / (1/&lambda;<sub>0</sub> &minus; &Delta;&nu;&#771;/10<sup>7</sup>)
+                </div>
+
+                <h3>Variable Definitions</h3>
+                <ul class="variable-list">
+                    <li><strong>&Delta;&nu;&#771;</strong> Raman shift (cm<sup>-1</sup>)</li>
+                    <li><strong>&lambda;<sub>0</sub></strong> Excitation laser wavelength (nm)</li>
+                    <li><strong>&lambda;<sub>R</sub></strong> Scattered light wavelength (nm)</li>
+                </ul>
+                <div class="note-box">
+                    <strong>Note on Scattering:</strong> A scattered wavelength greater than the excitation wavelength yields a positive (Stokes) shift. A wavelength smaller than the excitation yields a negative (anti-Stokes) shift.
+                </div>
             </div>
+
+            <!-- Grating Section -->
+            <div class="resource-section">
+                <h2>3. Grating Order Calculator</h2>
+                <p>Diffraction gratings disperse light into multiple orders based on the grating equation. This calculator determines the diffraction angle for a specific order and wavelength, and verifies if the order is physically propagating.</p>
+                
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-block">
+                    &beta; = arcsin(m&lambda;/d &minus; sin &alpha;)
+                </div>
+                <div class="formula-block">
+                    d (nm) = 10<sup>6</sup> / groove density (lines/mm)
+                </div>
+
+                <h3>Variable Definitions</h3>
+                <ul class="variable-list">
+                    <li><strong>&beta;</strong> Angle of diffraction (degrees)</li>
+                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
+                    <li><strong>m</strong> Diffraction order (integer)</li>
+                    <li><strong>&lambda;</strong> Light wavelength (nm)</li>
+                    <li><strong>d</strong> Grating period (nm)</li>
+                </ul>
+                <div class="note-box">
+                    <strong>Non-Propagating Orders:</strong> If the argument of the arcsine function is outside the range of -1 to +1, the diffraction order does not physically propagate and is rejected by the calculator.
+                </div>
+            </div>
+
+            <!-- Pulse Compression Section -->
+            <div class="resource-section">
+                <h2>4. Pulse Compression Calculator</h2>
+                <p>In ultrafast optics, grating pairs are used to compress chirped laser pulses. This calculator determines the Group Delay Dispersion (GDD) introduced by a grating pair in a double-pass configuration.</p>
+                
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-block">
+                    &Phi;&#8243; = &minus;[4L&lambda;<sup>3</sup> / (2&pi;c<sup>2</sup>d<sup>2</sup>)] &times; [1 &minus; (&lambda;/d &minus; sin &alpha;)<sup>2</sup>]<sup>&minus;3/2</sup>
+                </div>
+
+                <h3>Variable Definitions</h3>
+                <ul class="variable-list">
+                    <li><strong>&Phi;&#8243;</strong> Group Delay Dispersion (fs<sup>2</sup>)</li>
+                    <li><strong>L</strong> Perpendicular separation between gratings (mm)</li>
+                    <li><strong>&lambda;</strong> Center wavelength (nm)</li>
+                    <li><strong>c</strong> Speed of light (m/s)</li>
+                    <li><strong>d</strong> Grating period (nm)</li>
+                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
+                </ul>
+                <div class="note-box">
+                    <strong>Note on TOD:</strong> The calculator also provides an approximation for the Third-Order Dispersion (TOD) based on the computed GDD.
+                </div>
+            </div>
+
+            <!-- Pulse Front Tilt Section -->
+            <div class="resource-section">
+                <h2>5. Pulse Front Tilt Calculator</h2>
+                <p>When a pulse passes through a diffraction grating, the pulse front becomes tilted relative to the phase front. This calculator determines the required incidence and diffraction angles to achieve a specific pulse front tilt angle.</p>
+                
+                <h3>Mathematical Formulas</h3>
+                <div class="formula-block">
+                    &gamma; = arctan[m&lambda; / (d &times; cos &beta;)]
+                </div>
+                <div class="formula-block">
+                    sin &beta; = m&lambda;/d &minus; sin &alpha;
+                </div>
+
+                <h3>Variable Definitions</h3>
+                <ul class="variable-list">
+                    <li><strong>&gamma;</strong> Pulse front tilt angle (degrees)</li>
+                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
+                    <li><strong>&beta;</strong> Angle of diffraction (degrees)</li>
+                    <li><strong>m</strong> Diffraction order</li>
+                    <li><strong>&lambda;</strong> Light wavelength (nm)</li>
+                    <li><strong>d</strong> Grating period (nm)</li>
+                </ul>
+            </div>
+
         </div>
     </div>
 
     <!-- =====================================================================
-         VIEW 3: INDIVIDUAL CALCULATOR VIEW (Active calculated injected here)
+         VIEW 3: INDIVIDUAL CALCULATOR VIEW
          ===================================================================== -->
     <div id="calculatorView">
         <div class="hero" style="padding: 40px 20px;">
             <div class="hero-content" style="max-width: 1100px;">
                 <div class="hero-text">
                     <h1 id="calcHeroTitle" style="font-size: 2.2rem;">Calculator</h1>
-                    <div class="breadcrumb">Home / Resources / Calculators / <span id="calcBreadcrumb">Active</span></div>
+                    <div class="breadcrumb">Home / Calculators / <span id="calcBreadcrumb">Active</span></div>
                 </div>
                 <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
@@ -1029,11 +1169,9 @@
 
         <div class="calc-container">
             <div class="back-btn-container">
-                <!-- Uses navigateBack() to trigger browser history properly -->
                 <button class="btn btn-small" style="background: white; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none;" onclick="navigateBack()">&larr; Back to Calculators</button>
             </div>
             
-            <!-- Dynamic content (form + results + action buttons) injected here -->
             <div id="calcPageContent"></div>
         </div>
     </div>
@@ -1041,10 +1179,8 @@
     <script>
         // =====================================================================
         // SECTION 1: CORE MATHEMATICAL LOGIC
-        // All formulas and validation checks are kept separate from UI rendering.
         // =====================================================================
 
-        // Formats numbers nicely (max 6 sig figs, falls back to exponential for tiny/huge numbers)
         function formatNum(val) {
             if (val === 0) return '0';
             const abs = Math.abs(val);
@@ -1098,7 +1234,6 @@
 
         // =====================================================================
         // SECTION 2: CALCULATOR CONFIGURATIONS
-        // Defines fields, defaults, and math mappings for all 6 calculators.
         // =====================================================================
         const calculators = [
             {
@@ -1138,7 +1273,7 @@
                 id: 'raman',
                 title: 'Raman waveshift calculator',
                 desc: 'Use this calculator to convert between wavelength in nm and wavenumber in cm⁻¹.',
-                customRender: 'raman' // Uses a special rendering function below
+                customRender: 'raman'
             },
             {
                 id: 'na-fnum',
@@ -1162,28 +1297,26 @@
                 id: 'grating',
                 title: 'Grating order calculator',
                 desc: 'Use this calculator to find the diffraction angles for a grating.',
-                customRender: 'grating' // Uses a special rendering function below
+                customRender: 'grating'
             },
             {
                 id: 'pulse-compression',
                 title: 'Pulse compression calculator',
                 desc: 'This calculator helps you design your grating pulse compressor.',
-                customRender: 'pulse-compression' // Uses a special rendering function below
+                customRender: 'pulse-compression'
             },
             {
                 id: 'pulse-front-tilt',
                 title: 'Pulse front tilt calculator',
                 desc: 'This calculator enables you to calculate pulse front tilt.',
-                customRender: 'pulse-front-tilt' // Uses a special rendering function below
+                customRender: 'pulse-front-tilt'
             }
         ];
 
 
         // =====================================================================
-        // SECTION 3: NAVIGATION & BROWSER HISTORY FIX
-        // This manages the DOM state AND the URL/Browser History state.
+        // SECTION 3: NAVIGATION & BROWSER HISTORY
         // =====================================================================
-
         const grid = document.getElementById('calculatorGrid');
         const calcView = document.getElementById('calculatorView');
         const calcPageContent = document.getElementById('calcPageContent');
@@ -1191,7 +1324,6 @@
         const calcBreadcrumb = document.getElementById('calcBreadcrumb');
         let activeCalc = null;
 
-        // Populate the home page grid
         calculators.forEach(calc => {
             const card = document.createElement('div');
             card.className = 'card';
@@ -1203,7 +1335,6 @@
             grid.appendChild(card);
         });
 
-        // Switch main page views (Calculators vs Resources)
         function showPage(pageId, pushHistory = true) {
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
             calcView.style.display = 'none';
@@ -1213,7 +1344,6 @@
             if (pageId === 'calculators') document.getElementById('navCalcs').classList.add('active');
             if (pageId === 'resources') document.getElementById('navResources').classList.add('active');
 
-            // FIX: Update URL and browser history when navigating pages
             if (pushHistory) {
                 const url = new URL(window.location);
                 url.searchParams.delete('calc');
@@ -1224,7 +1354,6 @@
             window.scrollTo(0, 0);
         }
 
-        // Open a specific calculator
         function openCalculator(id, pushHistory = true) {
             activeCalc = calculators.find(c => c.id === id);
             if (!activeCalc) return;
@@ -1235,7 +1364,6 @@
             calcHeroTitle.textContent = activeCalc.title;
             calcBreadcrumb.textContent = activeCalc.title;
 
-            // Route to the correct renderer
             if (activeCalc.customRender === 'raman') {
                 renderRamanCustomCalculator();
             } else if (activeCalc.customRender === 'grating') {
@@ -1248,10 +1376,8 @@
                 renderLiveCalculator(activeCalc);
             }
 
-            // Attach standard buttons (Reset/Copy/CSV) to the bottom of the injected HTML
             attachStandardActions();
 
-            // FIX: Update URL and browser history when opening a calculator
             if (pushHistory) {
                 const url = new URL(window.location);
                 url.searchParams.set('calc', id);
@@ -1262,13 +1388,10 @@
             window.scrollTo(0, 0);
         }
 
-        // FIX: Custom Back Button Logic for safe navigation
         function navigateBack() {
-            // If we have a history state, go back naturally
             if (window.history.state && window.history.state.calc) {
-                history.back(); // This will trigger the 'popstate' listener
+                history.back();
             } else {
-                // Safe fallback if the user pasted a URL directly
                 const url = new URL(window.location);
                 url.searchParams.delete('calc');
                 url.searchParams.set('page', 'calculators');
@@ -1277,30 +1400,14 @@
             }
         }
 
-        // Deprecated fallback close function
-        function closeCalculator() {
-            const url = new URL(window.location);
-            url.searchParams.delete('calc');
-            url.searchParams.set('page', 'calculators');
-            history.pushState({ page: 'calculators' }, '', url);
-            
-            activeCalc = null;
-            calcView.style.display = 'none';
-            showPage('calculators', false);
-            window.scrollTo(0, 0);
-        }
-
-        // FIX: Listen to native browser Back/Forward buttons (and trackpad swipes)
         window.addEventListener('popstate', (event) => {
             const urlParams = new URLSearchParams(window.location.search);
             const calcId = urlParams.get('calc');
             const pageId = urlParams.get('page');
 
             if (calcId && calculators.find(c => c.id === calcId)) {
-                // Re-render the calculator WITHOUT pushing a new history state
-                openCalculator(calcId, false); 
+                openCalculator(calcId, false);
             } else {
-                // Re-render the main page WITHOUT pushing a new history state
                 activeCalc = null;
                 if (pageId === 'resources') {
                     showPage('resources', false);
@@ -1311,13 +1418,12 @@
         });
 
         // =====================================================================
-        // SECTION 4: SHARED RENDERING & VALIDATION ENGINE (FOR STANDARD FORMS)
+        // SECTION 4: SHARED RENDERING (STANDARD FORMS)
         // =====================================================================
         function attachStandardActions() {
             const container = document.getElementById('calcPageContent');
             if (!container) return;
             
-            // Add the Status Bar and Action Buttons underneath the calculator form
             const footerHTML = `
                 <div class="calc-status" id="calc-status" role="status" aria-live="polite"></div>
                 <div class="action-buttons">
@@ -1346,7 +1452,6 @@
             }
         }
 
-        // Standard form renderer for simple calculators (Spectrometer, NA)
         function renderLiveCalculator(calc) {
             let formHTML = '<div class="form-list">';
             calc.inputs.forEach(input => {
@@ -1460,10 +1565,8 @@
 
         // =====================================================================
         // SECTION 5: CUSTOM CALCULATOR RENDERERS
-        // These calculators have specific UI layouts and handle their own math.
         // =====================================================================
 
-        // --- RAMAN CUSTOM RENDERER ---
         function renderRamanCustomCalculator() {
             const html = `
                 <div class="raman-container">
@@ -1547,7 +1650,6 @@
         }
 
 
-        // --- GRATING CUSTOM RENDERER ---
         function renderGratingCustomCalculator() {
             const html = `
                 <div class="grating-wrapper">
@@ -1639,7 +1741,6 @@
 
         function toggleEquations() { document.getElementById('equation-overview').classList.toggle('active'); }
 
-        // 3D Logic for Grating
         let canvas, ctx, rotX = -0.2, rotY = 0.5, isDragging = false, lastMouseX = 0, lastMouseY = 0;
         
         function init3DCanvas() {
@@ -1647,7 +1748,6 @@
             const resizeCanvas = () => { const c = document.getElementById('canvas-container'); canvas.width = c.clientWidth; canvas.height = c.clientHeight; drawScene(); };
             window.addEventListener('resize', resizeCanvas); resizeCanvas();
             
-            // Mouse Events
             canvas.addEventListener('mousedown', (e) => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
@@ -1656,7 +1756,6 @@
             });
             window.addEventListener('mouseup', () => isDragging = false);
 
-            // Touch Events (Scoped strictly to canvas to avoid blocking browser swipe gestures)
             canvas.addEventListener('touchstart', (e) => { 
                 isDragging = true; 
                 lastMouseX = e.touches[0].clientX; 
@@ -1670,7 +1769,7 @@
                 lastMouseX = e.touches[0].clientX; 
                 lastMouseY = e.touches[0].clientY; 
                 drawScene(); 
-                e.preventDefault(); // Only prevents default on the canvas element itself
+                e.preventDefault(); 
             }, { passive: false });
             
             window.addEventListener('touchend', () => isDragging = false);
@@ -1741,7 +1840,6 @@
         }
 
 
-        // --- CUSTOM PULSE COMPRESSION RENDERER ---
         function renderPulseCompressionCustomCalculator() {
             const html = `
                 <div>
@@ -1843,7 +1941,6 @@
         }
 
 
-        // --- CUSTOM PULSE FRONT TILT RENDERER ---
         function renderPulseFrontTiltCustomCalculator() {
             const html = `
                 <div>
@@ -2026,7 +2123,7 @@
 
 
         // =====================================================================
-        // SECTION 6: UTILITY ACTIONS (Reset, Copy, Export)
+        // SECTION 6: UTILITY ACTIONS
         // =====================================================================
         function showFeedback(msg, type) {
             const fb = document.getElementById('action-feedback');
@@ -2170,7 +2267,6 @@
 
         // =====================================================================
         // SECTION 7: INITIALIZATION
-        // Check the URL parameters on page load to handle direct links safely.
         // =====================================================================
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -2178,13 +2274,10 @@
             const pageId = urlParams.get('page');
 
             if (calcId && calculators.find(c => c.id === calcId)) {
-                // If the page loaded with ?calc=raman, open it immediately
                 openCalculator(calcId, false);
             } else if (pageId === 'resources') {
-                // If the page loaded with ?page=resources, show resources
                 showPage('resources', false);
             }
-            // Otherwise, it defaults to the main calculators view (HTML default)
         });
     </script>
 </body>
