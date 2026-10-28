@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Calculators</title>
+    <style>
+        :root {
+            --bg-white: #ffffff;
+            --text-dark: #1a202c;
+            --text-muted: #4a5568;
+            --border-gray: #DDE2E8;
+            --btn-blue: #1877E8;
+            --btn-blue-hover: #125ea8;
+            --accent-orange: #f7931e;
+            --hero-bg-start: #1a2f4c;
+            --hero-bg-end: #2d4d76;
+            --error-bg: #fed7d7;
+            --error-text: #9b2c2c;
+            --success-bg: #c6f6d5;
+            --success-text: #22543d;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        * { box-sizing: border-box; }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid var(--border-gray);
+            background-color: var(--bg-white);
+        }
+
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            padding-bottom: 5px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-dark); }
+        .nav-links a.active {
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--btn-blue);
+            font-weight: bold;
+        }
+
+        /* Hero Header */
+        .hero {
+            background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+            color: white;
+            padding: 50px 40px;
+            border-bottom: 4px solid var(--accent-orange);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .breadcrumb {
+            font-size: 0.95rem;
+            color: #a0aec0;
+            font-weight: 500;
+        }
+
+        .breadcrumb span { color: #ffffff; }
+
+        .hero-icon {
+            opacity: 0.8;
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Main Content Views */
+        .page-view { display: none; }
+        .page-view.active-view { display: block; flex-grow: 1; }
+
+        /* Home Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1100px;
+            margin: 40px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            color: var(--text-dark);
+            font-size: 1.15rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 0 25px 0;
+            flex-grow: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(180deg, var(--btn-blue) 0%, #125ea8 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(24, 119, 232, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(24, 119, 232, 0.3);
+            background: linear-gradient(180deg, #1a82fb 0%, var(--btn-blue) 100%);
+        }
+
+        .btn-small {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 3px;
+        }
+
+        /* Calculator View Layout */
+        #calculatorView {
+            display: none;
+            flex-grow: 1;
+            background-color: #f9fbfd;
+        }
+
+        .calc-container {
+            max-width: 1100px;
+            margin: 40px auto 60px auto;
+            background: #ffffff;
+            padding: 40px;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        /* Standard Form Layout */
+        .form-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+
+        .form-row label {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .form-row input, .form-row select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            background-color: var(--bg-white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--text-dark);
+        }
+
+        .form-row input:focus, .form-row select:focus {
+            outline: none;
+            border-color: var(--btn-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
+        }
+
+        .form-row input.input-invalid {
+            border-color: #e53e3e;
+            background-color: #fff5f5;
+        }
+
+        .input-helper {
+            width: 100%;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0;
+        }
+
+        .field-error {
+            width: 100%;
+            color: #c53030;
+            font-size: 0.85rem;
+            margin-top: 0;
+            min-height: 1.2em;
+            line-height: 1.3;
+        }
+
+        /* Standard Results */
+        .live-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0 20px 0;
+            border-top: 1px solid var(--border-gray);
+            padding-top: 30px;
+        }
+
+        .result-card {
+            background-color: #f7fafc;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            border-left: 3px solid var(--btn-blue);
+        }
+
+        .result-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-value {
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            word-break: break-all;
+        }
+
+        /* Status */
+        .calc-status {
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .calc-status.status-success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            display: block;
+            border: 1px solid #9ae6b4;
+        }
+
+        .calc-status.status-error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            display: block;
+            border: 1px solid #feb2b2;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-feedback {
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .action-feedback.show { display: block; }
+        .action-feedback.success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+        .action-feedback.error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+        }
+
+        /* --- Custom Raman Calculator Layout --- */
+        .raman-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .raman-title {
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-gray);
+            padding-bottom: 10px;
+        }
+
+        .raman-laser-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .raman-input {
+            background: var(--bg-white);
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            width: 150px;
+            outline: none;
+        }
+        .raman-input:focus {
+            border-color: var(--btn-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
+        }
+
+        .raman-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .raman-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .raman-col-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .raman-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Custom Grating Calculator Layout --- */
+        .grating-top-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grating-panel {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .grating-input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .grating-input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .grating-input-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .grating-input-group input, .grating-input-group select {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            padding: 8px 10px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: bold;
+            outline: none;
+        }
+        
+        .grating-input-group input:focus, .grating-input-group select:focus {
+            border-color: var(--btn-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
+        }
+
+        .grating-middle-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 20px;
+        }
+
+        .grating-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .toggle-btn {
+            background-color: #ffffff;
+            border: 1px solid var(--border-gray);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            text-align: center;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--btn-blue);
+            color: white;
+            border-color: var(--btn-blue);
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .xyz-group {
+            display: flex;
+            gap: 2px;
+        }
+
+        .xyz-btn {
+            background-color: var(--text-dark);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grating-canvas-container {
+            background-color: var(--bg-white);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+            border: 1px solid var(--border-gray);
+        }
+
+        .grating-canvas-container:active {
+            cursor: grabbing;
+        }
+
+        .grating-canvas-container canvas {
+            width: 100%;
+            height: 100%;
+            max-height: 350px;
+            display: block;
+        }
+
+        .canvas-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #999;
+            pointer-events: none;
+        }
+
+        .grating-data-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .wavelength-slider-container {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .wavelength-slider {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 10px;
+        }
+
+        .order-cell {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-gray);
+            padding: 5px 2px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .order-cell.header {
+            background-color: #f1f5f9;
+            font-weight: bold;
+        }
+        
+        .order-cell.active {
+            background-color: var(--btn-blue);
+            color: white;
+            border-color: var(--btn-blue);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .order-action-btn {
+            flex: 1;
+            background-color: #ffffff;
+            border: 1px solid var(--border-gray);
+            color: var(--text-dark);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .calc-summary {
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-top: 10px;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 4px;
+        }
+
+        /* Equation Button & Section */
+        .equation-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .equation-btn {
+            background-color: var(--text-dark);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .equation-btn:hover {
+            background-color: #000;
+        }
+
+        .equation-overview-content {
+            display: none;
+            background-color: var(--bg-white);
+            border-radius: 6px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid var(--border-gray);
+            color: var(--text-dark);
+        }
+
+        .equation-overview-content.active {
+            display: block;
+        }
+
+        .equation-overview-content h4 {
+            color: var(--text-dark);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .equation-overview-content h4:first-child { margin-top: 0; }
+        .equation-overview-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
+        .equation-overview-content ul { padding: 0 0 0 20px; margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-muted); }
+        .equation-overview-content li { margin-bottom: 8px; }
+        .equation-overview-content .math-var { font-style: italic; font-family: 'Times New Roman', Times, serif; font-size: 1.05rem; }
+        .equation-block { text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 1.2rem; margin: 20px 0; color: var(--text-dark); }
+        .equation-block sub, .equation-block sup { font-size: 0.7em; }
+
+        /* --- Custom Pulse Compression / Front Tilt Layout --- */
+        .simple-form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .simple-form-group label {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .simple-input-container {
+            width: 200px;
+            position: relative;
+        }
+
+        .simple-input-container input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            background-color: var(--bg-white);
+            text-align: center;
+            outline: none;
+        }
+
+        .simple-input-container input:focus {
+            border-color: var(--btn-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
+        }
+
+        .simple-slider {
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .simple-result-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .simple-result-group label {
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .simple-result-box {
+            width: 200px;
+            padding: 10px 15px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            background-color: #f7fafc;
+            text-align: center;
+            min-height: 42px;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .chart-canvas-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .hero { padding: 30px 20px; }
+            .hero-text h1 { font-size: 2rem; }
+            .grating-middle-layout { grid-template-columns: 1fr; }
+            .grating-top-panel { grid-template-columns: 1fr; }
+            .simple-form-group, .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .simple-input-container, .simple-result-box { width: 100%; }
+        }
+
+        @media (max-width: 600px) {
+            .navbar { flex-direction: column; gap: 15px; padding: 15px; }
+            .grid-container { grid-template-columns: 1fr; }
+            .calc-container { padding: 20px; margin: 20px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand" onclick="showPage('calculators')">Technical Calculators</div>
+        <ul class="nav-links">
+            <li><a onclick="showPage('calculators')" id="navCalcs" class="active">Calculators</a></li>
+            <li><a onclick="showPage('resources')" id="navResources">Resources</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. CALCULATORS PAGE -->
+    <div id="calculatorsView" class="page-view active-view">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Calculators</h1>
+                    <div class="breadcrumb">Home / Resources / <span>Calculators</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container" id="calculatorGrid">
+            <!-- Cards generated by JS -->
+        </div>
+    </div>
+
+    <!-- 2. RESOURCES PAGE -->
+    <div id="resourcesView" class="page-view">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Resources</h1>
+                    <div class="breadcrumb">Home / <span>Resources</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+            <h2>Optics & Spectroscopy Guides</h2>
+            <p style="color: var(--text-muted); font-size: 1.05rem;">Explore helpful documentation, scientific references, and formulas used in our calculators.</p>
+            
+            <div style="background: #f8fafc; border: 1px solid var(--border-gray); border-left: 4px solid var(--accent-orange); padding: 20px; border-radius: 0 6px 6px 0; margin-bottom: 20px;">
+                <h3 style="margin-top: 0;">Spectrometer Design Guide</h3>
+                <p style="margin-bottom: 0; color: var(--text-muted);">Understand how focal length, angular dispersion, and grating width affect resolving power. The fundamental equation is <strong>R = W × (dβ/dλ)</strong>.</p>
+            </div>
+            
+            <div style="background: #f8fafc; border: 1px solid var(--border-gray); border-left: 4px solid var(--accent-orange); padding: 20px; border-radius: 0 6px 6px 0; margin-bottom: 20px;">
+                <h3 style="margin-top: 0;">Raman Spectroscopy Primer</h3>
+                <p style="margin-bottom: 0; color: var(--text-muted);">Learn the difference between Stokes and anti-Stokes scattering. A positive Raman shift indicates Stokes scattering, while a negative shift indicates anti-Stokes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. INDIVIDUAL CALCULATOR VIEW -->
+    <div id="calculatorView">
+        <div class="hero" style="padding: 40px 20px;">
+            <div class="hero-content" style="max-width: 1100px;">
+                <div class="hero-text">
+                    <h1 id="calcHeroTitle" style="font-size: 2.2rem;">Calculator</h1>
+                    <div class="breadcrumb">Home / Resources / Calculators / <span id="calcBreadcrumb">Active</span></div>
+                </div>
+                <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                    <line x1="8" y1="6" x2="16" y2="6"></line>
+                    <line x1="16" y1="14" x2="16.01" y2="14"></line>
+                    <line x1="12" y1="14" x2="12.01" y2="14"></line>
+                    <line x1="8" y1="14" x2="8.01" y2="14"></line>
+                    <line x1="16" y1="18" x2="16.01" y2="18"></line>
+                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    <line x1="8" y1="18" x2="8.01" y2="18"></line>
+                </svg>
+            </div>
+        </div>
+
+        <div class="calc-container">
+            <button class="btn btn-small" style="background: white; color: var(--text-dark); border: 1px solid var(--border-gray); margin-bottom: 20px; width: auto; box-shadow: none;" onclick="closeCalculator()">&larr; Back to Calculators</button>
+            
+            <div id="calcPageContent">
+                <!-- Dynamic Form Injected Here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 1. MATHEMATICAL LOGIC
+        // =========================================================================
+
+        function formatNum(val) {
+            if (val === 0) return '0';
+            const abs = Math.abs(val);
+            if (abs >= 1e-3 && abs < 1e7) {
+                return parseFloat(val.toPrecision(6)).toString();
+            }
+            return val.toExponential(4);
+        }
+
+        function calcSpectrometer(f, dBeta_dLambda, deltaLambda, W) {
+            if (f <= 0 || dBeta_dLambda <= 0 || deltaLambda <= 0 || W <= 0) throw new Error("All values must be > 0.");
+            const dx = f * dBeta_dLambda * deltaLambda;
+            const R = W * dBeta_dLambda;
+            return { dx: formatNum(dx) + ' mm', R: formatNum(R) };
+        }
+
+        function calcRamanShift(lambda0, lambdaR) {
+            if (lambda0 <= 0 || lambdaR <= 0) throw new Error("Wavelengths must be > 0 nm.");
+            const shift = 1e7 * (1 / lambda0 - 1 / lambdaR);
+            return formatNum(shift) + ' cm⁻¹';
+        }
+
+        function calcRamanWavelength(lambda0, shift) {
+            if (lambda0 <= 0) throw new Error("Excitation wavelength must be > 0 nm.");
+            const denom = (1 / lambda0) - (shift / 1e7);
+            if (denom <= 0) throw new Error("Invalid Raman shift: 1/λ₀ − Δν̃/10⁷ must be > 0.");
+            const lambdaR = 1 / denom;
+            if (!Number.isFinite(lambdaR) || lambdaR <= 0) throw new Error("Invalid Raman shift: no physical scattered wavelength.");
+            return formatNum(lambdaR) + ' nm';
+        }
+
+        function naToFnum(na) {
+            if (na <= 0) throw new Error("NA must be > 0.");
+            return formatNum(1 / (2 * na));
+        }
+
+        function fnumToNa(fnum) {
+            if (fnum <= 0) throw new Error("f-number must be > 0.");
+            return formatNum(1 / (2 * fnum));
+        }
+
+        function calcGratingAngle(m, lambda, d_nm, alpha_deg) {
+            if (m === 0) throw new Error("Order (m) cannot be zero.");
+            if (lambda <= 0 || d_nm <= 0) throw new Error("Values must be > 0.");
+            const alpha_rad = alpha_deg * Math.PI / 180;
+            const arg = (m * lambda) / d_nm - Math.sin(alpha_rad);
+            if (arg < -1 || arg > 1) throw new Error("Non-propagating order.");
+            return Math.asin(arg) * 180 / Math.PI; 
+        }
+
+        // =========================================================================
+        // 2. CALCULATOR CONFIGURATION
+        // =========================================================================
+
+        const calculators = [
+            {
+                id: 'spectrometer',
+                title: 'Spectrometer designer',
+                desc: 'Use this calculator to estimate critical parameters for a spectrometer design.',
+                layout: 'horizontal',
+                inputs: [
+                    { id: 'f', label: 'Collimator focal l. (mm)', type: 'number', val: '38.3' },
+                    { id: 'dlambda', label: 'Resolution (nm)', type: 'number', val: '1' },
+                    { id: 'dbeta', label: 'Angular Dispersion (rad/nm)', type: 'number', val: '0.001' },
+                    { id: 'W', label: 'Illuminated Width W (nm)', type: 'number', val: '20000' },
+                    { id: 'minWl', label: 'Min. wavelength (nm)', type: 'number', val: '785' },
+                    { id: 'maxWl', label: 'Max. wavelength (nm)', type: 'number', val: '1100' },
+                    { id: 'littrow', label: 'Deviation from Littrow (degrees)', type: 'number', val: '0' },
+                    { id: 'grooveDensity', label: 'Groove density (l/mm)', type: 'number', val: '1500' },
+                    { id: 'magnification', label: 'Magnification', type: 'number', val: '1' },
+                    { id: 'detectorWidth', label: 'Detector width (mm)', type: 'number', val: '25.6' },
+                    { id: 'na', label: 'Numerical aperture', type: 'number', val: '0.22', hasButton: true },
+                    { id: 'slitWidth', label: 'Slit width (um)', type: 'number', val: '81.27' },
+                    { id: 'focusingFocal', label: 'Focusing focal l. (mm)', type: 'number', val: '38.3' },
+                    { id: 'aoi', label: 'Grating AOI (degrees)', type: 'number', val: '45' },
+                    { id: 'diffAngle785', label: 'Diffr. angle (785 nm)', type: 'number', val: '28.1' },
+                    { id: 'diffAngle942', label: 'Diffr. angle (942.5 nm)', type: 'number', val: '45' },
+                    { id: 'diffAngle1100', label: 'Diffr. angle (1100 nm)', type: 'number', val: '70.6' },
+                    { id: 'gratingSize', label: 'Grating size (mm)', type: 'number', val: '24.4' }
+                ],
+                calculate: (v) => {
+                    const res = calcSpectrometer(v.f, v.dbeta, v.dlambda, v.W);
+                    return [
+                        { label: 'Linear Dispersion (dx)', value: res.dx },
+                        { label: 'Resolving Power (R)', value: res.R }
+                    ];
+                }
+            },
+            {
+                id: 'raman',
+                title: 'Raman waveshift calculator',
+                desc: 'Use this calculator to convert between wavelength in nm and wavenumber in cm⁻¹.',
+                customRender: 'raman'
+            },
+            {
+                id: 'na-fnum',
+                title: 'NA to f-number converter',
+                desc: 'This calculator converts between numerical aperture and f-number.',
+                layout: 'horizontal',
+                inputs: [
+                    { id: 'calcType', label: 'Conversion Type', type: 'select', options: [
+                        {val: 'na2f', text: 'NA to f-number'},
+                        {val: 'f2na', text: 'f-number to NA'}
+                    ]},
+                    { id: 'na', label: 'Numerical Aperture (NA)', type: 'number', val: '0.5', dependsOn: { id: 'calcType', val: 'na2f' }, hasButton: true },
+                    { id: 'fnum', label: 'f-number (N)', type: 'number', val: '2.0', dependsOn: { id: 'calcType', val: 'f2na' }, hasButton: true }
+                ],
+                calculate: (v) => {
+                    if (v.calcType === 'na2f') return [{ label: 'f-number (N)', value: naToFnum(v.na) }];
+                    return [{ label: 'Numerical Aperture (NA)', value: fnumToNa(v.fnum) }];
+                }
+            },
+            {
+                id: 'grating',
+                title: 'Grating order calculator',
+                desc: 'Use this calculator to find the diffraction angles for a grating.',
+                customRender: 'grating'
+            },
+            {
+                id: 'pulse-compression',
+                title: 'Pulse compression calculator',
+                desc: 'This calculator helps you design your grating pulse compressor.',
+                customRender: 'pulse-compression'
+            },
+            {
+                id: 'pulse-front-tilt',
+                title: 'Pulse front tilt calculator',
+                desc: 'This calculator enables you to calculate pulse front tilt.',
+                customRender: 'pulse-front-tilt'
+            }
+        ];
+
+        // =========================================================================
+        // 3. RENDERING & LIVE ENGINE
+        // =========================================================================
+
+        const grid = document.getElementById('calculatorGrid');
+        calculators.forEach(calc => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${calc.title}</h3>
+                <p>${calc.desc}</p>
+                <button class="btn" onclick="openCalculator('${calc.id}')">Go to the calculator &rarr;</button>
+            `;
+            grid.appendChild(card);
+        });
+
+        const calcView = document.getElementById('calculatorView');
+        const calcPageContent = document.getElementById('calcPageContent');
+        const calcHeroTitle = document.getElementById('calcHeroTitle');
+        const calcBreadcrumb = document.getElementById('calcBreadcrumb');
+        let activeCalc = null;
+
+        // 3D State
+        let canvas, ctx, rotX = -0.2, rotY = 0.5, isDragging = false, lastMouseX = 0, lastMouseY = 0;
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
+            calcView.style.display = 'none';
+            document.getElementById(pageId + 'View').classList.add('active-view');
+
+            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+            if (pageId === 'calculators') document.getElementById('navCalcs').classList.add('active');
+            if (pageId === 'resources') document.getElementById('navResources').classList.add('active');
+
+            window.scrollTo(0, 0);
+        }
+
+        function openCalculator(id) {
+            activeCalc = calculators.find(c => c.id === id);
+            if (!activeCalc) return;
+
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
+            calcView.style.display = 'block';
+            window.scrollTo(0, 0);
+            
+            calcHeroTitle.textContent = activeCalc.title;
+            calcBreadcrumb.textContent = activeCalc.title;
+
+            if (activeCalc.customRender === 'raman') {
+                renderRamanCustomCalculator();
+            } else if (activeCalc.customRender === 'grating') {
+                renderGratingCustomCalculator();
+            } else if (activeCalc.customRender === 'pulse-compression') {
+                renderPulseCompressionCustomCalculator();
+            } else if (activeCalc.customRender === 'pulse-front-tilt') {
+                renderPulseFrontTiltCustomCalculator();
+            } else {
+                renderLiveCalculator(activeCalc);
+            }
+
+            attachStandardActions();
+        }
+
+        function attachStandardActions() {
+            const container = document.getElementById('calcPageContent');
+            if (!container) return;
+            
+            const footerHTML = `
+                <div class="calc-status" id="calc-status" role="status" aria-live="polite"></div>
+                <div class="action-buttons">
+                    <button type="button" class="btn" id="btn-reset">Reset</button>
+                    <button type="button" class="btn" id="btn-copy">Copy Results</button>
+                    <button type="button" class="btn" id="btn-csv">Export CSV</button>
+                </div>
+                <div class="action-feedback" id="action-feedback" role="status" aria-live="polite"></div>
+            `;
+            container.insertAdjacentHTML('beforeend', footerHTML);
+
+            document.getElementById('btn-reset').addEventListener('click', resetCalculator);
+            document.getElementById('btn-copy').addEventListener('click', copyResults);
+            document.getElementById('btn-csv').addEventListener('click', exportCSV);
+        }
+
+        function closeCalculator() {
+            clearTimeout(window._actionFeedbackTimer);
+            activeCalc = null;
+            calcView.style.display = 'none';
+            showPage('calculators');
+        }
+
+        function updateStatus(isSuccess) {
+            const status = document.getElementById('calc-status');
+            if (!status) return;
+            if (isSuccess) {
+                status.className = 'calc-status status-success';
+                status.textContent = '✓ Calculation successful.';
+            } else {
+                status.className = 'calc-status status-error';
+                status.textContent = '⚠ Please correct the highlighted input(s).';
+            }
+        }
+
+        // --- CUSTOM RAMAN RENDERER ---
+        function renderRamanCustomCalculator() {
+            const html = `
+                <div class="raman-container">
+                    <h2 class="raman-title">Raman waveshift calculator</h2>
+                    
+                    <div class="raman-laser-row">
+                        <label>Laser wavelength (nm) =</label>
+                        <input type="number" id="raman-laser" class="raman-input" value="785" step="any">
+                    </div>
+
+                    <div class="raman-grid">
+                        <div class="raman-col">
+                            <div class="raman-col-header"><span>Wave number</span><span>(cm⁻¹)</span></div>
+                            <div class="raman-row"><span>Low end</span><input type="number" id="raman-low-cm" class="raman-input" value="200" step="any"></div>
+                            <div class="raman-row"><span>High end</span><input type="number" id="raman-high-cm" class="raman-input" value="3650" step="any"></div>
+                            <div class="raman-row"><span>Resolution</span><input type="number" id="raman-res-cm" class="raman-input" value="10" step="any"></div>
+                        </div>
+                        <div class="raman-col">
+                            <div class="raman-col-header"><span>Wavelength</span><span>(nm)</span></div>
+                            <div class="raman-row"><span>Low end</span><input type="number" id="raman-low-nm" class="raman-input" value="797.5" step="any"></div>
+                            <div class="raman-row"><span>High end</span><input type="number" id="raman-high-nm" class="raman-input" value="1100.2" step="any"></div>
+                            <div class="raman-row"><span>Resolution</span><input type="number" id="raman-res-nm" class="raman-input" value="0.64" step="any"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            calcPageContent.innerHTML = html;
+
+            const laserInput = document.getElementById('raman-laser');
+            const lowCmInput = document.getElementById('raman-low-cm');
+            const highCmInput = document.getElementById('raman-high-cm');
+            const resCmInput = document.getElementById('raman-res-cm');
+            const lowNmInput = document.getElementById('raman-low-nm');
+            const highNmInput = document.getElementById('raman-high-nm');
+            const resNmInput = document.getElementById('raman-res-nm');
+
+            function updateFromCm(e) {
+                if(e && e.isTrusted === false) return;
+                const laser = parseFloat(laserInput.value);
+                const lowCm = parseFloat(lowCmInput.value);
+                const highCm = parseFloat(highCmInput.value);
+                const resCm = parseFloat(resCmInput.value);
+                if (isNaN(laser) || isNaN(lowCm) || isNaN(highCm) || isNaN(resCm)) return;
+
+                const calcNm = (shift) => { const d = (1 / laser) - (shift / 1e7); return d <= 0 ? NaN : 1 / d; };
+                const lowNm = calcNm(lowCm); const highNm = calcNm(highCm); const lowResNm = calcNm(highCm - resCm);
+                
+                lowNmInput.value = isNaN(lowNm) ? '' : lowNm.toFixed(2);
+                highNmInput.value = isNaN(highNm) ? '' : highNm.toFixed(2);
+                resNmInput.value = isNaN(Math.abs(highNm - lowResNm)) ? '' : Math.abs(highNm - lowResNm).toFixed(2);
+                updateStatus(true);
+            }
+
+            function updateFromNm(e) {
+                if(e && e.isTrusted === false) return;
+                const laser = parseFloat(laserInput.value);
+                const lowNm = parseFloat(lowNmInput.value);
+                const highNm = parseFloat(highNmInput.value);
+                const resNm = parseFloat(resNmInput.value);
+                if (isNaN(laser) || isNaN(lowNm) || isNaN(highNm) || isNaN(resNm)) return;
+
+                const calcCm = (lambda) => 1e7 * ((1 / laser) - (1 / lambda));
+                const lowCm = calcCm(lowNm); const highCm = calcCm(highNm); const lowResCm = calcCm(highNm - resNm);
+                
+                lowCmInput.value = isNaN(lowCm) ? '' : lowCm.toFixed(2);
+                highCmInput.value = isNaN(highCm) ? '' : highCm.toFixed(2);
+                resCmInput.value = isNaN(Math.abs(highCm - lowResCm)) ? '' : Math.abs(highCm - lowResCm).toFixed(2);
+                updateStatus(true);
+            }
+
+            laserInput.addEventListener('input', updateFromCm);
+            lowCmInput.addEventListener('input', updateFromCm);
+            highCmInput.addEventListener('input', updateFromCm);
+            resCmInput.addEventListener('input', updateFromCm);
+            
+            lowNmInput.addEventListener('input', updateFromNm);
+            highNmInput.addEventListener('input', updateFromNm);
+            resNmInput.addEventListener('input', updateFromNm);
+            
+            updateStatus(true);
+        }
+
+
+        // --- CUSTOM GRATING RENDERER ---
+        function renderGratingCustomCalculator() {
+            const html = `
+                <div class="grating-wrapper">
+                    <div class="grating-top-panel">
+                        <div class="grating-panel">
+                            <div class="grating-input-group"><label>Period/Resolution:</label><select><option>Period</option></select></div>
+                            <div class="grating-input-group"><label>Period [nm]</label><input type="number" id="grating-period" value="2000" step="any"></div>
+                        </div>
+                        <div class="grating-panel">
+                            <div class="grating-input-group"><label>Grating type</label><select><option>1D Grating</option></select></div>
+                            <div class="grating-input-group"><label>AOI [°]</label><input type="number" id="grating-aoi" value="30" step="any"></div>
+                            <div class="grating-input-group"><label>Phi [°]</label><input type="number" value="0" step="any"></div>
+                        </div>
+                        <div class="grating-panel">
+                            <div class="grating-input-group"><label>Start wavelength [nm]</label><input type="number" value="190" step="any"></div>
+                            <div class="grating-input-group"><label>End wavelength [nm]</label><input type="number" value="2000" step="any"></div>
+                            <button class="grating-top-btn">Share this grating</button>
+                        </div>
+                    </div>
+                    <div class="grating-middle-layout">
+                        <div class="grating-panel grating-controls">
+                            <select style="width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #d1d9e6; font-size: 0.8rem; font-weight: bold; color: #1a2f4c; margin-bottom: 10px;"><option>Draw: Slider value</option></select>
+                            <div class="toggle-group"><button class="toggle-btn">Reflection</button><button class="toggle-btn active">Transmission</button></div>
+                            <div class="toggle-group"><button class="toggle-btn">Axis</button><button class="toggle-btn active">Rays</button><button class="toggle-btn">Dots</button></div>
+                            <div class="toggle-group"><button class="toggle-btn active">Grating</button><button class="toggle-btn">Orders</button></div>
+                            <div class="control-row"><span>Clockwise</span><div class="xyz-group"><button class="xyz-btn">X</button><button class="xyz-btn">Y</button><button class="xyz-btn">Z</button></div></div>
+                            <div class="control-row"><span>Anti-clockwise</span><div class="xyz-group"><button class="xyz-btn">X</button><button class="xyz-btn">Y</button><button class="xyz-btn">Z</button></div></div>
+                            <div class="control-row"><span>Set direction</span><div class="xyz-group"><button class="xyz-btn">X</button><button class="xyz-btn">Y</button><button class="xyz-btn">Z</button></div></div>
+                        </div>
+                        <div class="grating-panel grating-canvas-container" id="canvas-container">
+                            <canvas id="grating-canvas"></canvas>
+                            <div class="canvas-hint">Drag to rotate</div>
+                        </div>
+                        <div class="grating-panel grating-data-panel">
+                            <div class="wavelength-slider-container">
+                                <span>Wavelength slider:</span>
+                                <input type="range" class="wavelength-slider" id="grating-wl-slider" min="190" max="2000" value="550" step="1">
+                                <span id="grating-wl-val">550</span> nm
+                            </div>
+                            <div class="order-header"><button class="order-action-btn" style="width: 30px; flex: none;">-</button><span>Order</span><button class="order-action-btn" style="width: 30px; flex: none;">+</button></div>
+                            <div class="order-grid" id="grating-order-grid"></div>
+                            <div class="order-actions"><button class="order-action-btn">Show all</button><button class="order-action-btn" style="background-color: #e8eef6;">Hide all</button></div>
+                            <div class="calc-summary" id="grating-summary"></div>
+                        </div>
+                    </div>
+                    <div class="equation-btn-container"><button class="equation-btn" onclick="toggleEquations()">Equation overview</button></div>
+                    <div class="equation-overview-content" id="equation-overview">
+                        <h4>List of symbols:</h4>
+                        <ul>
+                            <li><span class="math-var">AOI</span>: Angle of incidence</li>
+                            <li><span class="math-var">&phi;</span>: Angle to the normal of the grating lines of the incident light</li>
+                            <li><span class="math-var">n<sub>x</sub></span>: Diffraction order number in x</li>
+                            <li><span class="math-var">n<sub>y</sub></span>: Diffraction order number in y</li>
+                            <li><span class="math-var">k<sub>x</sub></span>: Wave vector in x</li>
+                            <li><span class="math-var">k<sub>y</sub></span>: Wave vector in y</li>
+                            <li><span class="math-var">k<sub>z</sub></span>: Wave vector in z (out of the grating plane)</li>
+                            <li><span class="math-var">&lambda;</span>: Light wavelength</li>
+                            <li><span class="math-var">&Lambda;<sub>x</sub></span>: Grating period in x</li>
+                            <li><span class="math-var">&Lambda;<sub>y</sub></span>: Grating period in y (in case of 1D gratings, this becomes infinite)</li>
+                            <li><span class="math-var">AOD</span>: Angle of diffraction</li>
+                            <li><span class="math-var">&psi;</span>: Angle to the normal of the grating lines of the diffracted light</li>
+                        </ul>
+                        <h4>Wavevectors:</h4>
+                        <p>The outgoing wavevectors are given by the following equations:</p>
+                        <div class="equation-block"><i>k<sub>x</sub></i> = 2&pi; ( <i>n<sub>x</sub></i> / &Lambda;<sub>x</sub> + sin(<i>AOI</i>) cos(<i>&phi;</i>) / &lambda; )</div>
+                        <div class="equation-block"><i>k<sub>y</sub></i> = 2&pi; ( <i>n<sub>y</sub></i> / &Lambda;<sub>y</sub> + sin(<i>AOI</i>) sin(<i>&phi;</i>) / &lambda; )</div>
+                        <div class="equation-block"><i>k<sub>z</sub></i> = &radic;( 4&pi;<sup>2</sup> / &lambda;<sup>2</sup> &minus; <i>k<sub>x</sub></i><sup>2</sup> &minus; <i>k<sub>y</sub></i><sup>2</sup> )</div>
+                        <p>In case of a 1d grating, the period in y (&Lambda;<sub>y</sub>) is set to infinity, and all the y-terms go to 0.</p>
+                        <h4>Angles of diffraction:</h4>
+                        <p>From these wavevectors, the angle of diffraction (<i>AOD</i>) and the angle to the x-axis (<i>&psi;</i>) can be found like this:</p>
+                        <div class="equation-block"><i>AOD</i> = cos<sup>&minus;1</sup> ( &lambda;<i>k<sub>z</sub></i> / 2&pi; )</div>
+                        <div class="equation-block"><i>&psi;</i> = atan2(<i>k<sub>y</sub></i>, <i>k<sub>x</sub></i>)</div>
+                        <h4>Littrow angles:</h4>
+                        <p>The Littrow angles in x and y are given by the following equations:</p>
+                        <div class="equation-block"><i>L<sub>x</sub></i> = sin<sup>&minus;1</sup> ( &lambda; / 2 cos(<i>&phi;</i>)&Lambda;<sub>x</sub> )</div>
+                    </div>
+                </div>
+            `;
+            calcPageContent.innerHTML = html;
+            init3DCanvas();
+            document.getElementById('grating-period').addEventListener('input', updateGratingUI);
+            document.getElementById('grating-aoi').addEventListener('input', updateGratingUI);
+            document.getElementById('grating-wl-slider').addEventListener('input', (e) => {
+                document.getElementById('grating-wl-val').textContent = e.target.value;
+                updateGratingUI();
+            });
+            updateGratingUI();
+        }
+
+        function toggleEquations() { document.getElementById('equation-overview').classList.toggle('active'); }
+
+        // 3D Logic for Grating
+        function init3DCanvas() {
+            canvas = document.getElementById('grating-canvas'); ctx = canvas.getContext('2d');
+            const resizeCanvas = () => { const c = document.getElementById('canvas-container'); canvas.width = c.clientWidth; canvas.height = c.clientHeight; drawScene(); };
+            window.addEventListener('resize', resizeCanvas); resizeCanvas();
+            canvas.addEventListener('mousedown', (e) => { isDragging = true; lastMouseX = e.clientX; lastMouseY = e.clientY; });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                rotY += (e.clientX - lastMouseX) * 0.01; rotX += (e.clientY - lastMouseY) * 0.01;
+                lastMouseX = e.clientX; lastMouseY = e.clientY; drawScene();
+            });
+            window.addEventListener('mouseup', () => isDragging = false);
+            canvas.addEventListener('touchstart', (e) => { isDragging = true; lastMouseX = e.touches[0].clientX; lastMouseY = e.touches[0].clientY; });
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                rotY += (e.touches[0].clientX - lastMouseX) * 0.01; rotX += (e.touches[0].clientY - lastMouseY) * 0.01;
+                lastMouseX = e.touches[0].clientX; lastMouseY = e.touches[0].clientY; drawScene(); e.preventDefault();
+            }, { passive: false });
+            window.addEventListener('touchend', () => isDragging = false);
+        }
+
+        function project(x, y, z) {
+            const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+            const x1 = x * cosY - z * sinY, z1 = x * sinY + z * cosY;
+            const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+            const y1 = y * cosX - z1 * sinX, z2 = y * sinX + z1 * cosX;
+            const scale = 800 / (800 + z2);
+            return { x: canvas.width / 2 + x1 * scale, y: canvas.height / 2 + y1 * scale };
+        }
+
+        function drawScene() {
+            if (!ctx) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const period_nm = parseFloat(document.getElementById('grating-period').value) || 2000;
+            const aoi = parseFloat(document.getElementById('grating-aoi').value) || 30;
+            const wl = parseFloat(document.getElementById('grating-wl-slider').value) || 550;
+            const pOrigin = project(0, 0, 0);
+
+            ctx.fillStyle = '#e9b3f5'; 
+            for (let y = -200; y < 200; y += 25) {
+                const p1 = project(0, y, 0), p2 = project(0, y + 20, 0);
+                ctx.fillRect(p1.x - 5, p1.y, 10, p2.y - p1.y);
+            }
+
+            const inX = -200 * Math.sin(aoi * Math.PI / 180), inY = -200 * Math.cos(aoi * Math.PI / 180);
+            const pIn = project(inX, inY, 0);
+            ctx.beginPath(); ctx.moveTo(pIn.x, pIn.y); ctx.lineTo(pOrigin.x, pOrigin.y); ctx.strokeStyle = '#0000ff'; ctx.lineWidth = 3; ctx.stroke();
+
+            [-5, -4, -3, -2, -1, 0, 1, 2, 3].forEach(m => {
+                try {
+                    const angleDeg = calcGratingAngle(m, wl, period_nm, aoi);
+                    const rad = (90 - angleDeg) * Math.PI / 180; 
+                    const pOut = project(220 * Math.sin(rad), -220 * Math.cos(rad), 0);
+                    ctx.beginPath(); ctx.moveTo(pOrigin.x, pOrigin.y); ctx.lineTo(pOut.x, pOut.y); ctx.strokeStyle = '#ff0000'; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.fillStyle = '#ff0000'; ctx.font = 'bold 12px Arial'; ctx.fillText(m, pOut.x + 5, pOut.y - 5);
+                } catch (e) {}
+            });
+        }
+
+        function updateGratingUI() {
+            const period_nm = parseFloat(document.getElementById('grating-period').value);
+            const aoi = parseFloat(document.getElementById('grating-aoi').value);
+            const wl = parseFloat(document.getElementById('grating-wl-slider').value);
+            const grid = document.getElementById('grating-order-grid'); grid.innerHTML = '';
+            
+            ['-3', '-2', '-1', '0', '1', '2', '3'].forEach(m => {
+                grid.innerHTML += `<div class="order-cell header">${m}</div>`;
+            });
+            ['-3', '-2', '-1', '0', '1', '2', '3'].forEach(m => {
+                try {
+                    const angle = calcGratingAngle(parseInt(m), wl, period_nm, aoi);
+                    grid.innerHTML += `<div class="order-cell">${angle.toFixed(1)}°<br><span style="font-size:0.6rem; color:#666;">180°</span></div>`;
+                } catch (e) { grid.innerHTML += `<div class="order-cell">N/A</div>`; }
+            });
+            try {
+                const littrow = Math.asin(wl / (2 * period_nm)) * 180 / Math.PI;
+                const dispersion = (1 / (period_nm * Math.cos(Math.asin((1 * wl) / period_nm - Math.sin(aoi * Math.PI / 180))))) * (180 / Math.PI) * 1e-6;
+                document.getElementById('grating-summary').innerHTML = `Littrow angle = ${isNaN(littrow) ? 'N/A' : littrow.toFixed(3)}°<br><br>-1. order dispersion = ${isNaN(dispersion) ? 'N/A' : dispersion.toFixed(4)}°/nm`;
+                updateStatus(true);
+            } catch(e) { 
+                document.getElementById('grating-summary').innerHTML = `Littrow angle = N/A<br><br>-1. order dispersion = N/A`; 
+                updateStatus(false);
+            }
+            drawScene();
+        }
+
+
+        // --- CUSTOM PULSE COMPRESSION RENDERER ---
+        function renderPulseCompressionCustomCalculator() {
+            const html = `
+                <div>
+                    <h2 style="font-size: 1.5rem; border-bottom: 2px solid var(--border-gray); padding-bottom: 10px; margin-top: 0; margin-bottom: 30px;">Pulse compression calculator</h2>
+                    
+                    <div class="simple-form-group">
+                        <label>Center wavelength (nm)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pc-wl-input" value="1064" step="any">
+                            <input type="range" class="simple-slider" id="pc-wl-slider" min="200" max="2000" value="1064" step="1">
+                        </div>
+                    </div>
+                    
+                    <div class="simple-form-group">
+                        <label>Distance between gratings (mm)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pc-dist" value="10" step="any">
+                        </div>
+                    </div>
+                    
+                    <div class="simple-form-group">
+                        <label>Groove density (l/mm)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pc-density" value="1000" step="any">
+                        </div>
+                    </div>
+                    
+                    <div class="simple-form-group">
+                        <label>AOI on 1st grating (degrees)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pc-aoi" value="45" step="any">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px;">
+                        <div class="simple-result-group">
+                            <label>Double-pass GDD (fs²)</label>
+                            <div class="simple-result-box" id="pc-gdd">-</div>
+                        </div>
+
+                        <div class="simple-result-group">
+                            <label>Double-pass TOD (fs³)</label>
+                            <div class="simple-result-box" id="pc-tod">-</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            calcPageContent.innerHTML = html;
+
+            const wlInput = document.getElementById('pc-wl-input');
+            const wlSlider = document.getElementById('pc-wl-slider');
+            wlInput.addEventListener('input', () => { wlSlider.value = wlInput.value; });
+            wlSlider.addEventListener('input', () => { wlInput.value = wlSlider.value; });
+
+            ['pc-wl-input', 'pc-dist', 'pc-density', 'pc-aoi'].forEach(id => {
+                document.getElementById(id).addEventListener('input', calcPulseCompressionCustom);
+            });
+
+            calcPulseCompressionCustom();
+        }
+
+        function calcPulseCompressionCustom() {
+            const wl = parseFloat(document.getElementById('pc-wl-input').value);
+            const L = parseFloat(document.getElementById('pc-dist').value);
+            const density = parseFloat(document.getElementById('pc-density').value);
+            const aoi = parseFloat(document.getElementById('pc-aoi').value);
+
+            if (isNaN(wl) || isNaN(L) || isNaN(density) || isNaN(aoi) || wl <= 0 || L <= 0 || density <= 0) {
+                document.getElementById('pc-gdd').textContent = "Invalid Input";
+                document.getElementById('pc-tod').textContent = "Invalid Input";
+                updateStatus(false);
+                return;
+            }
+
+            const c = 299792458;
+            const L_m = L * 1e-3;
+            const lambda_m = wl * 1e-9;
+            const d_m = (1e6 / density) * 1e-9;
+            const alpha = aoi * Math.PI / 180;
+
+            const sinBeta = lambda_m / d_m - Math.sin(alpha);
+            if (Math.abs(sinBeta) > 1) {
+                document.getElementById('pc-gdd').textContent = "Non-propagating";
+                document.getElementById('pc-tod').textContent = "Non-propagating";
+                updateStatus(false);
+                return;
+            }
+
+            const cosBeta = Math.sqrt(1 - sinBeta * sinBeta);
+            const gdd = -(4 * L_m * Math.pow(lambda_m, 3)) / (Math.PI * Math.pow(c, 2) * Math.pow(d_m, 2) * Math.pow(cosBeta, 3)) * 2; 
+            
+            const term1 = (3 * lambda_m) / (2 * Math.PI * c);
+            const term2 = 1 + (lambda_m * Math.sin(alpha)) / (d_m * Math.pow(cosBeta, 2));
+            const tod = term1 * term2 * gdd;
+
+            document.getElementById('pc-gdd').textContent = (gdd * 1e30).toExponential(4);
+            document.getElementById('pc-tod').textContent = (tod * 1e45).toExponential(4);
+            updateStatus(true);
+        }
+
+
+        // --- CUSTOM PULSE FRONT TILT RENDERER ---
+        function renderPulseFrontTiltCustomCalculator() {
+            const html = `
+                <div>
+                    <h2 style="font-size: 1.5rem; border-bottom: 2px solid var(--border-gray); padding-bottom: 10px; margin-top: 0; margin-bottom: 30px;">Pulse front tilt calculator</h2>
+                    
+                    <div class="simple-form-group">
+                        <label>Wavelength (nm)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pft-wl" value="800" step="any">
+                        </div>
+                    </div>
+                    
+                    <div class="simple-form-group">
+                        <label>Required pulse front tilt (deg)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pft-tilt" value="77" step="any">
+                        </div>
+                    </div>
+                    
+                    <div class="simple-form-group">
+                        <label>Grating resolution (l/mm)</label>
+                        <div class="simple-input-container">
+                            <input type="number" id="pft-density" value="1812" step="any">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px;">
+                        <div class="simple-result-group">
+                            <label>AOI (deg)</label>
+                            <div class="simple-result-box" id="pft-aoi">-</div>
+                        </div>
+
+                        <div class="simple-result-group">
+                            <label>AOD (deg)</label>
+                            <div class="simple-result-box" id="pft-aod">-</div>
+                        </div>
+                    </div>
+
+                    <p style="text-align: center; color: var(--text-muted); margin-top: 30px; font-size: 0.95rem;">
+                        The plot below shows the calculated AOI and AOD for the required pulse front tilt as a function of grating resolutions.
+                    </p>
+
+                    <div class="chart-container">
+                        <div class="chart-title" id="pft-chart-title">AOI & AOD for 77 deg pulse front tilt with 800 nm wavelength</div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><div class="legend-color" style="background: var(--btn-blue);"></div>AOD</div>
+                            <div class="legend-item"><div class="legend-color" style="background: #c53030;"></div>AOI</div>
+                        </div>
+                        <div class="chart-canvas-wrapper">
+                            <canvas id="pft-chart" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            `;
+            calcPageContent.innerHTML = html;
+
+            ['pft-wl', 'pft-tilt', 'pft-density'].forEach(id => {
+                document.getElementById(id).addEventListener('input', calcPulseFrontTiltCustom);
+            });
+
+            calcPulseFrontTiltCustom();
+        }
+
+        function calcPulseFrontTiltCustom() {
+            const wl = parseFloat(document.getElementById('pft-wl').value);
+            const tilt = parseFloat(document.getElementById('pft-tilt').value);
+            const density = parseFloat(document.getElementById('pft-density').value);
+
+            if (isNaN(wl) || isNaN(tilt) || isNaN(density) || wl <= 0 || tilt <= 0 || density <= 0 || tilt >= 90) {
+                document.getElementById('pft-aoi').textContent = "Invalid";
+                document.getElementById('pft-aod').textContent = "Invalid";
+                drawPFTChart(null, null);
+                updateStatus(false);
+                return;
+            }
+
+            document.getElementById('pft-chart-title').textContent = `AOI & AOD for ${tilt} deg pulse front tilt with ${wl} nm wavelength`;
+
+            const d = 1e6 / density;
+            const gamma = tilt * Math.PI / 180;
+
+            const cosBetaSq = Math.pow((wl / d) / Math.tan(gamma), 2);
+            
+            if (cosBetaSq > 1) {
+                document.getElementById('pft-aoi').textContent = "N/A";
+                document.getElementById('pft-aod').textContent = "N/A";
+                drawPFTChart(null, null);
+                updateStatus(false);
+                return;
+            }
+
+            const cosBeta = Math.sqrt(cosBetaSq);
+            const sinBeta = Math.sqrt(1 - cosBetaSq);
+            const beta = Math.asin(sinBeta);
+
+            const sinAlpha = (wl / d) - sinBeta;
+            if (Math.abs(sinAlpha) > 1) {
+                document.getElementById('pft-aoi').textContent = "N/A";
+                document.getElementById('pft-aod').textContent = "N/A";
+                drawPFTChart(null, null);
+                updateStatus(false);
+                return;
+            }
+
+            const alpha = Math.asin(sinAlpha);
+
+            document.getElementById('pft-aoi').textContent = (alpha * 180 / Math.PI).toFixed(2);
+            document.getElementById('pft-aod').textContent = (beta * 180 / Math.PI).toFixed(2);
+
+            const dataAOI = [], dataAOD = [], resolutions = [];
+            for (let r = 1000; r <= 2500; r += 50) {
+                resolutions.push(r);
+                const dd = 1e6 / r;
+                const cbs = Math.pow((wl / dd) / Math.tan(gamma), 2);
+                if (cbs > 1) { dataAOI.push(null); dataAOD.push(null); continue; }
+                
+                const cb = Math.sqrt(cbs), sb = Math.sqrt(1 - cbs);
+                const b = Math.asin(sb), sa = (wl / dd) - sb;
+                
+                if (Math.abs(sa) > 1) { dataAOI.push(null); dataAOD.push(null); } 
+                else { 
+                    const a = Math.asin(sa);
+                    dataAOI.push(a * 180 / Math.PI);
+                    dataAOD.push(b * 180 / Math.PI);
+                }
+            }
+            drawPFTChart(resolutions, dataAOI, dataAOD);
+            updateStatus(true);
+        }
+
+        function drawPFTChart(resolutions, dataAOI, dataAOD) {
+            const canvas = document.getElementById('pft-chart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width, height = canvas.height, padding = 40;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(padding, padding); ctx.lineTo(padding, height - padding); ctx.lineTo(width - padding, height - padding); ctx.stroke();
+
+            ctx.fillStyle = '#64748b'; ctx.font = '12px Arial'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+            for (let i = 0; i <= 90; i += 10) {
+                const y = height - padding - (i / 90) * (height - 2 * padding);
+                ctx.fillText(i, padding - 10, y);
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.beginPath(); ctx.moveTo(padding, y); ctx.lineTo(width - padding, y); ctx.stroke();
+            }
+
+            ctx.save(); ctx.translate(15, height / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillText("Angle [deg]", 0, 0); ctx.restore();
+
+            if (!resolutions || resolutions.length === 0) {
+                ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'center';
+                ctx.fillText("No valid data for these parameters", width / 2, height / 2); return;
+            }
+
+            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+            const minR = resolutions[0], maxR = resolutions[resolutions.length - 1];
+            
+            for (let r = 1250; r <= 2350; r += 250) {
+                const x = padding + ((r - minR) / (maxR - minR)) * (width - 2 * padding);
+                ctx.save(); ctx.translate(x, height - padding + 10); ctx.rotate(-Math.PI / 6); ctx.fillText(r, 0, 0); ctx.restore();
+            }
+            ctx.fillText("Grating resolution [l/mm]", width / 2, height - 10);
+
+            const drawLine = (data, color) => {
+                ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.beginPath();
+                let started = false;
+                for (let i = 0; i < resolutions.length; i++) {
+                    if (data[i] === null) { started = false; continue; }
+                    const x = padding + ((resolutions[i] - minR) / (maxR - minR)) * (width - 2 * padding);
+                    const y = height - padding - (data[i] / 90) * (height - 2 * padding);
+                    if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
+                }
+                ctx.stroke();
+            };
+
+            if (dataAOD) drawLine(dataAOD, '#1877E8');
+            if (dataAOI) drawLine(dataAOI, '#c53030');
+        }
+
+
+        // --- STANDARD RENDERER (For other calculators) ---
+        function renderLiveCalculator(calc) {
+            let formHTML = '<div class="form-list">';
+            calc.inputs.forEach(input => {
+                const dependsAttr = input.dependsOn ? `data-depends-on="${input.dependsOn.id}" data-depends-val="${input.dependsOn.val}"` : '';
+                formHTML += `<div class="form-row" id="group-${input.id}" ${dependsAttr}>`;
+                formHTML += `<label for="input-${input.id}">${input.label}</label>`;
+                formHTML += `<div class="input-wrapper">`;
+                if (input.type === 'select') {
+                    formHTML += `<select id="input-${input.id}" data-id="${input.id}">`;
+                    input.options.forEach(opt => formHTML += `<option value="${opt.val}">${opt.text}</option>`);
+                    formHTML += `</select>`;
+                } else {
+                    formHTML += `<input type="number" id="input-${input.id}" data-id="${input.id}" step="any" value="${input.val}">`;
+                }
+                if (input.hasButton) formHTML += `<button type="button" class="btn btn-small" style="background: #f1f5f9; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none; white-space: nowrap;">convert</button>`;
+                formHTML += `</div>`;
+                if (input.helper) formHTML += `<div class="input-helper">${input.helper}</div>`;
+                formHTML += `<div class="field-error" id="error-${input.id}" role="alert" aria-live="polite"></div>`;
+                formHTML += `</div>`;
+            });
+            formHTML += '</div>';
+
+            calcPageContent.innerHTML = `
+                ${formHTML}
+                <div class="live-results" id="results-container"></div>
+            `;
+
+            const inputElements = calcPageContent.querySelectorAll('input, select');
+            inputElements.forEach(el => el.addEventListener('input', () => { updateVisibility(calc); liveCalculate(calc); }));
+
+            updateVisibility(calc);
+            liveCalculate(calc);
+        }
+
+        function updateVisibility(calc) {
+            calc.inputs.forEach(input => {
+                if (!input.dependsOn) return;
+                const controller = document.getElementById('input-' + input.dependsOn.id);
+                const group = document.getElementById('group-' + input.id);
+                if (controller && group) group.style.display = controller.value === input.dependsOn.val ? 'flex' : 'none';
+            });
+        }
+
+        function getRawValues() {
+            const raw = {};
+            calcPageContent.querySelectorAll('input, select').forEach(el => {
+                const id = el.dataset.id || el.id;
+                if(id) raw[id] = el.type === 'number' ? (el.value.trim() === '' ? NaN : parseFloat(el.value)) : el.value;
+            });
+            return raw;
+        }
+
+        function validateInputs(calc, raw) {
+            const errors = {};
+            if (!calc.inputs) return errors; // custom renders handle their own
+            
+            calc.inputs.forEach(input => {
+                const group = document.getElementById('group-' + input.id);
+                if (group && group.style.display === 'none') return; 
+                const val = raw[input.id];
+                const errEl = document.getElementById('error-' + input.id);
+                const inputEl = document.getElementById('input-' + input.id);
+                let errorMsg = '';
+                if (input.type === 'number') {
+                    if (Number.isNaN(val)) errorMsg = 'Required';
+                    else if (!Number.isFinite(val)) errorMsg = 'Invalid number';
+                    else if (!input.allowNegative && val < 0) errorMsg = 'Cannot be negative';
+                    else if (input.id !== 'littrow' && input.id !== 'diffAngle785' && input.id !== 'diffAngle942' && input.id !== 'diffAngle1100' && val === 0) errorMsg = 'Must be > 0';
+                }
+                if (errorMsg) {
+                    errors[input.id] = errorMsg;
+                    if (errEl) errEl.textContent = errorMsg;
+                    if (inputEl) { inputEl.classList.add('input-invalid'); inputEl.setAttribute('aria-invalid', 'true'); }
+                } else {
+                    if (errEl) errEl.textContent = '';
+                    if (inputEl) { inputEl.classList.remove('input-invalid'); inputEl.removeAttribute('aria-invalid'); }
+                }
+            });
+            return errors;
+        }
+
+        function liveCalculate(calc) {
+            const fb = document.getElementById('action-feedback'); if (fb) fb.className = 'action-feedback';
+            const raw = getRawValues();
+            const errors = validateInputs(calc, raw);
+            const resultsContainer = document.getElementById('results-container');
+            
+            if (Object.keys(errors).length > 0) {
+                if(resultsContainer) resultsContainer.innerHTML = '';
+                updateStatus(false);
+                return;
+            }
+
+            try {
+                const results = calc.calculate(raw);
+                if(resultsContainer) {
+                    resultsContainer.innerHTML = results.map(res => `
+                        <div class="result-card">
+                            <div class="result-label">${res.label}</div>
+                            <div class="result-value">${res.value}</div>
+                        </div>
+                    `).join('');
+                }
+                updateStatus(true);
+            } catch (err) {
+                if(resultsContainer) resultsContainer.innerHTML = '';
+                updateStatus(false);
+            }
+        }
+
+        // =========================================================================
+        // 4. ACTIONS
+        // =========================================================================
+
+        function showFeedback(msg, type) {
+            const fb = document.getElementById('action-feedback');
+            if (!fb) return;
+            fb.textContent = msg; fb.className = 'action-feedback show ' + type;
+            clearTimeout(window._actionFeedbackTimer);
+            window._actionFeedbackTimer = setTimeout(() => fb.className = 'action-feedback', 3000);
+        }
+
+        function resetCalculator() {
+            if (activeCalc.id === 'raman') {
+                document.getElementById('raman-laser').value = 785;
+                document.getElementById('raman-low-cm').value = 200;
+                document.getElementById('raman-high-cm').value = 3650;
+                document.getElementById('raman-res-cm').value = 10;
+                document.getElementById('raman-low-cm').dispatchEvent(new Event('input'));
+            } else if (activeCalc.id === 'grating') {
+                document.getElementById('grating-period').value = 2000;
+                document.getElementById('grating-aoi').value = 30;
+                document.getElementById('grating-wl-slider').value = 550;
+                document.getElementById('grating-wl-slider').dispatchEvent(new Event('input'));
+            } else if (activeCalc.id === 'pulse-compression') {
+                document.getElementById('pc-wl-input').value = 1064;
+                document.getElementById('pc-wl-slider').value = 1064;
+                document.getElementById('pc-dist').value = 10;
+                document.getElementById('pc-density').value = 1000;
+                document.getElementById('pc-aoi').value = 45;
+                calcPulseCompressionCustom();
+            } else if (activeCalc.id === 'pulse-front-tilt') {
+                document.getElementById('pft-wl').value = 800;
+                document.getElementById('pft-tilt').value = 77;
+                document.getElementById('pft-density').value = 1812;
+                calcPulseFrontTiltCustom();
+            } else {
+                activeCalc.inputs.forEach(input => {
+                    const el = document.getElementById('input-' + input.id);
+                    if (!el || input.type === 'select') return;
+                    el.value = input.val;
+                });
+                updateVisibility(activeCalc); liveCalculate(activeCalc); 
+            }
+            showFeedback('✓ Defaults restored.', 'success');
+        }
+
+        function getValidatedSnapshot() {
+            const raw = getRawValues();
+            const errors = validateInputs(activeCalc, raw);
+            if (Object.keys(errors).length > 0) return null;
+            
+            // For custom calculators, we just return everything as valid if it made it here
+            if (activeCalc.calculate) {
+                try { return { raw, results: activeCalc.calculate(raw) }; } catch (e) { return null; }
+            } else {
+                return { raw, results: [] }; // Custom renders will rely on DOM values
+            }
+        }
+
+        function buildReportText(snap) {
+            let text = `Technical Calculators — ${activeCalc.title}\n------------------------------------------------\n\n`;
+            text += 'Inputs:\n';
+            
+            if (activeCalc.inputs) {
+                activeCalc.inputs.forEach(input => {
+                    const group = document.getElementById('group-' + input.id);
+                    if (group && group.style.display === 'none') return;
+                    let displayVal = snap.raw[input.id];
+                    if (input.type === 'select') displayVal = input.options.find(o => o.val === displayVal)?.text || displayVal;
+                    text += `  ${input.label.padEnd(32, '.')} ${displayVal}\n`;
+                });
+            } else {
+                // Fallback for custom renders
+                calcPageContent.querySelectorAll('input, select').forEach(el => {
+                    if (el.type === 'range') return;
+                    const label = el.previousElementSibling?.textContent || el.id;
+                    text += `  ${label.trim().padEnd(32, '.')} ${el.value}\n`;
+                });
+            }
+
+            text += '\nResults:\n';
+            if (snap.results && snap.results.length > 0) {
+                snap.results.forEach(res => text += `  ${res.label.padEnd(32, '.')} ${res.value}\n`);
+            } else {
+                calcPageContent.querySelectorAll('.simple-result-box, .calc-summary, #grating-summary').forEach(el => {
+                    text += `  Output:\n  ${el.innerText}\n`;
+                });
+            }
+            text += `\nGenerated: ${new Date().toLocaleString()}`;
+            return text;
+        }
+
+        async function copyResults() {
+            const snap = getValidatedSnapshot();
+            if (!snap) { showFeedback('⚠ Fix input errors before copying.', 'error'); return; }
+            const text = buildReportText(snap);
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(text);
+                else {
+                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+                }
+                showFeedback('✓ Results copied to clipboard.', 'success');
+            } catch (err) { showFeedback('⚠ Copy failed. Please copy manually.', 'error'); }
+        }
+
+        function exportCSV() {
+            const snap = getValidatedSnapshot();
+            if (!snap) { showFeedback('⚠ Fix input errors before exporting.', 'error'); return; }
+            const rows = [['Type', 'Label', 'Value']];
+            
+            if (activeCalc.inputs) {
+                activeCalc.inputs.forEach(input => {
+                    const group = document.getElementById('group-' + input.id);
+                    if (group && group.style.display === 'none') return;
+                    let displayVal = snap.raw[input.id];
+                    if (input.type === 'select') displayVal = input.options.find(o => o.val === displayVal)?.text || displayVal;
+                    rows.push(['Input', input.label, displayVal]);
+                });
+            } else {
+                calcPageContent.querySelectorAll('input, select').forEach(el => {
+                    if (el.type === 'range') return;
+                    const label = el.previousElementSibling?.textContent || el.id;
+                    rows.push(['Input', label.trim(), el.value]);
+                });
+            }
+
+            if (snap.results && snap.results.length > 0) {
+                snap.results.forEach(res => rows.push(['Result', res.label, res.value]));
+            } else {
+                calcPageContent.querySelectorAll('.simple-result-box').forEach(el => {
+                    const label = el.previousElementSibling?.textContent || 'Output';
+                    rows.push(['Result', label.trim(), el.innerText]);
+                });
+            }
+
+            const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            a.download = `${activeCalc.id}-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.csv`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            showFeedback('✓ CSV exported.', 'success');
+        }
+    </script>
+</body>
+</html>
