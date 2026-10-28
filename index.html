@@ -11,6 +11,7 @@
         :root {
             --bg-white: #ffffff;
             --bg-light: #f9fbfd;
+            --bg-gray: #f1f5f9;
             --text-dark: #1a202c;
             --text-muted: #4a5568;
             --border-gray: #DDE2E8;
@@ -25,10 +26,13 @@
             --error-text: #9b2c2c;
             --success-bg: #c6f6d5;
             --success-text: #22543d;
+            --warning-bg: #fffbeb;
+            --warning-border: #fde68a;
+            --warning-text: #92400e;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-white);
             color: var(--text-dark);
             margin: 0;
@@ -54,6 +58,9 @@
             background-color: var(--bg-white);
             flex-wrap: wrap;
             gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-brand {
@@ -101,7 +108,7 @@
         }
 
         .hero-content {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -128,13 +135,6 @@
         }
 
         .breadcrumb span { color: #ffffff; }
-
-        .hero-icon {
-            opacity: 0.8;
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
-        }
 
         /* =====================================================================
            MAIN VIEWS & HOME GRID
@@ -211,10 +211,6 @@
             padding: 6px 12px;
             font-size: 0.8rem;
             border-radius: 3px;
-        }
-
-        .back-btn-container {
-            margin-bottom: 20px;
         }
 
         /* =====================================================================
@@ -394,581 +390,335 @@
         /* =====================================================================
            NEW PROFESSIONAL RESOURCES PAGE STYLES
            ===================================================================== */
-        .resources-container {
-            max-width: 900px;
-            margin: 50px auto 80px auto;
+        .docs-layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 40px auto 80px auto;
             padding: 0 20px;
+            gap: 40px;
+            align-items: flex-start;
         }
 
-        .resource-section {
+        /* Left Sidebar (TOC & Search) */
+        .docs-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 100px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            border-color: var(--btn-blue);
+            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
+        }
+
+        .toc-nav {
             background: #ffffff;
             border: 1px solid var(--border-gray);
             border-radius: 8px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
-        .resource-section h2 {
-            color: var(--text-dark);
-            font-size: 1.8rem;
+        .toc-nav h3 {
             margin-top: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
             margin-bottom: 15px;
-            border-bottom: 2px solid var(--border-gray);
-            padding-bottom: 10px;
         }
 
-        .resource-section h3 {
-            color: var(--text-dark);
-            font-size: 1.2rem;
-            margin-top: 30px;
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-list li {
             margin-bottom: 10px;
         }
 
-        .resource-section p {
+        .toc-list a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .toc-list a:hover, .toc-list a.active {
+            background: #f1f5f9;
+            color: var(--btn-blue);
+            font-weight: 600;
+        }
+
+        /* Right Content Area */
+        .docs-content {
+            flex-grow: 1;
+            min-width: 0; /* Prevents flexbox overflow */
+        }
+
+        .doc-section {
+            background: #ffffff;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            scroll-margin-top: 100px;
+        }
+
+        .doc-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-gray);
+            padding-bottom: 15px;
+        }
+
+        .doc-icon {
+            background: var(--btn-blue);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .doc-section h2 {
+            color: var(--text-dark);
+            font-size: 1.6rem;
+            margin: 0;
+        }
+
+        .doc-desc {
             color: var(--text-muted);
             font-size: 1.05rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .formula-block {
-            background-color: #f7fafc;
-            border-left: 4px solid var(--btn-blue);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 6px 6px 0;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 1.25rem;
+        .doc-subheading {
+            font-size: 1.1rem;
             color: var(--text-dark);
-            text-align: center;
-            overflow-x: auto;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
         }
 
-        .variable-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .variable-list li {
+        /* Math Formula Panels */
+        .formula-panel {
             background: #f8fafc;
-            padding: 12px 15px;
-            border-radius: 6px;
-            border: 1px solid var(--border-gray);
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .variable-list strong {
-            color: var(--text-dark);
-            font-style: italic;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 1.1rem;
-            margin-right: 5px;
-        }
-
-        .note-box {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-left: 4px solid var(--accent-orange);
-            padding: 15px 20px;
+            border-left: 4px solid var(--btn-blue);
             border-radius: 0 6px 6px 0;
-            font-size: 0.95rem;
-            color: #92400e;
-            margin-top: 20px;
-        }
-
-        /* =====================================================================
-           CUSTOM LAYOUT: RAMAN WAVESHIFT
-           ===================================================================== */
-        .raman-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .raman-title {
-            color: var(--text-dark);
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 0;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-gray);
-            padding-bottom: 10px;
-        }
-
-        .raman-laser-row {
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow-x: auto;
             display: flex;
+            justify-content: space-between;
             align-items: center;
             gap: 15px;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
+        }
+
+        .formula-content {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.3rem;
             color: var(--text-dark);
-            font-weight: 600;
-            flex-wrap: wrap;
+            white-space: nowrap;
         }
 
-        .raman-input {
-            background: var(--bg-white);
-            border: 1px solid var(--border-gray);
-            border-radius: 4px;
-            padding: 10px 12px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            width: 150px;
-            max-width: 100%;
-            outline: none;
-        }
-        .raman-input:focus {
-            border-color: var(--btn-blue);
-            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
-        }
-
-        .raman-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .raman-col {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .raman-col-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            font-weight: 600;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-gray);
-        }
-
-        .raman-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1rem;
-            color: var(--text-muted);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        /* =====================================================================
-           CUSTOM LAYOUT: GRATING ORDER (IBSEN STYLE)
-           ===================================================================== */
-        .grating-top-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .grating-panel {
-            background-color: #ffffff;
-            border-radius: 6px;
-            padding: 20px;
-            border: 1px solid var(--border-gray);
-        }
-
-        .grating-input-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-
-        .grating-input-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .grating-input-group label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-
-        .grating-input-group input, .grating-input-group select {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-gray);
-            border-radius: 4px;
-            padding: 8px 10px;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            font-weight: bold;
-            outline: none;
-            width: 100%;
-        }
-        
-        .grating-input-group input:focus, .grating-input-group select:focus {
-            border-color: var(--btn-blue);
-            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
-        }
-
-        .grating-middle-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .grating-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .toggle-group {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .toggle-btn {
-            background-color: #ffffff;
+        .copy-btn {
+            background: #ffffff;
             border: 1px solid var(--border-gray);
             color: var(--text-muted);
             padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: bold;
-            flex: 1;
-            text-align: center;
-        }
-
-        .toggle-btn.active {
-            background-color: var(--btn-blue);
-            color: white;
-            border-color: var(--btn-blue);
-        }
-
-        .control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
             font-weight: 600;
-            margin-top: 10px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .xyz-group {
-            display: flex;
-            gap: 2px;
-        }
-
-        .xyz-btn {
-            background-color: var(--text-dark);
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 2px;
-            font-size: 0.7rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
         }
 
-        .grating-canvas-container {
-            background-color: var(--bg-white);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            cursor: grab;
-            border: 1px solid var(--border-gray);
-            min-height: 300px;
-        }
-
-        .grating-canvas-container:active {
-            cursor: grabbing;
-        }
-
-        .grating-canvas-container canvas {
-            width: 100%;
-            height: 100%;
-            max-height: 350px;
-            display: block;
-            touch-action: none;
-        }
-
-        .canvas-hint {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 0.7rem;
-            color: #999;
-            pointer-events: none;
-        }
-
-        .grating-data-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .wavelength-slider-container {
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: bold;
+        .copy-btn:hover {
+            background: var(--bg-gray);
             color: var(--text-dark);
+            border-color: #cbd5e1;
         }
 
-        .wavelength-slider {
-            width: 100%;
-            margin-top: 5px;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--text-dark);
-            margin-bottom: 5px;
-        }
-
-        .order-grid {
+        /* Variable Grid */
+        .var-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-            gap: 4px;
-            margin-bottom: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-        .order-cell {
-            background-color: var(--bg-white);
+        .var-item {
+            background: #ffffff;
             border: 1px solid var(--border-gray);
-            padding: 6px 2px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-dark);
-            border-radius: 2px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
         }
 
-        .order-cell.header {
-            background-color: #f1f5f9;
+        .var-symbol {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.15rem;
             font-weight: bold;
-        }
-        
-        .order-cell.active {
-            background-color: var(--btn-blue);
-            color: white;
-            border-color: var(--btn-blue);
+            color: var(--text-dark);
+            margin-right: 5px;
         }
 
-        .order-actions {
+        /* Warning Callout */
+        .warning-callout {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            border-left: 4px solid var(--accent-orange);
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.95rem;
+            color: var(--warning-text);
             display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start;
         }
 
-        .order-action-btn {
-            flex: 1;
-            background-color: #ffffff;
+        .warning-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Mobile TOC Dropdown */
+        .mobile-toc {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .mobile-toc select {
+            width: 100%;
+            padding: 12px;
             border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #ffffff;
+            font-weight: 600;
             color: var(--text-dark);
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            min-width: 80px;
-        }
-
-        .calc-summary {
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--text-dark);
-            margin-top: 10px;
-            padding: 10px;
-            background: #f7fafc;
-            border-radius: 4px;
         }
 
         /* =====================================================================
-           CUSTOM LAYOUT: PULSE COMPRESSION & FRONT TILT
+           CUSTOM LAYOUT: RAMAN, GRATING, PULSE (Abbreviated for this file)
            ===================================================================== */
-        .simple-form-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f1f5f9;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .raman-container { max-width: 800px; margin: 0 auto; }
+        .raman-title { color: var(--text-dark); font-size: 1.5rem; font-weight: 700; margin-top: 0; margin-bottom: 30px; border-bottom: 2px solid var(--border-gray); padding-bottom: 10px; }
+        .raman-laser-row { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; font-size: 1.1rem; color: var(--text-dark); font-weight: 600; flex-wrap: wrap; }
+        .raman-input { background: var(--bg-white); border: 1px solid var(--border-gray); border-radius: 4px; padding: 10px 12px; font-size: 1rem; color: var(--text-dark); width: 150px; max-width: 100%; outline: none; }
+        .raman-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .raman-col { display: flex; flex-direction: column; gap: 20px; }
+        .raman-col-header { display: flex; justify-content: space-between; font-size: 1.1rem; color: var(--text-dark); font-weight: 600; padding-bottom: 10px; border-bottom: 2px solid var(--border-gray); }
+        .raman-row { display: flex; justify-content: space-between; align-items: center; font-size: 1rem; color: var(--text-muted); flex-wrap: wrap; gap: 10px; }
 
-        .simple-form-group label {
-            font-size: 1rem;
-            color: var(--text-dark);
-            font-weight: 600;
-            flex: 1;
-            min-width: 200px;
-        }
+        .grating-top-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .grating-panel { background-color: #ffffff; border-radius: 6px; padding: 20px; border: 1px solid var(--border-gray); }
+        .grating-input-group { display: flex; flex-direction: column; margin-bottom: 15px; }
+        .grating-input-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+        .grating-input-group input, .grating-input-group select { background-color: var(--bg-white); border: 1px solid var(--border-gray); border-radius: 4px; padding: 8px 10px; font-size: 0.95rem; color: var(--text-dark); font-weight: bold; outline: none; width: 100%; }
+        .grating-middle-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grating-controls { display: flex; flex-direction: column; gap: 10px; }
+        .toggle-group { display: flex; gap: 5px; flex-wrap: wrap; }
+        .toggle-btn { background-color: #ffffff; border: 1px solid var(--border-gray); color: var(--text-muted); padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-weight: bold; flex: 1; text-align: center; }
+        .toggle-btn.active { background-color: var(--btn-blue); color: white; border-color: var(--btn-blue); }
+        .control-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 10px; flex-wrap: wrap; gap: 10px; }
+        .xyz-group { display: flex; gap: 2px; }
+        .xyz-btn { background-color: var(--text-dark); color: white; border: none; width: 24px; height: 24px; border-radius: 2px; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .grating-canvas-container { background-color: var(--bg-white); border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: grab; border: 1px solid var(--border-gray); min-height: 300px; }
+        .grating-canvas-container canvas { width: 100%; height: 100%; max-height: 350px; display: block; touch-action: none; }
+        .canvas-hint { position: absolute; bottom: 10px; right: 10px; font-size: 0.7rem; color: #999; pointer-events: none; }
+        .grating-data-panel { display: flex; flex-direction: column; gap: 15px; }
+        .wavelength-slider-container { text-align: center; font-size: 0.85rem; font-weight: bold; color: var(--text-dark); }
+        .wavelength-slider { width: 100%; margin-top: 5px; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; font-weight: bold; color: var(--text-dark); margin-bottom: 5px; }
+        .order-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 4px; margin-bottom: 10px; }
+        .order-cell { background-color: var(--bg-white); border: 1px solid var(--border-gray); padding: 6px 2px; text-align: center; font-size: 0.75rem; color: var(--text-dark); border-radius: 2px; display: flex; flex-direction: column; justify-content: center; }
+        .order-cell.header { background-color: #f1f5f9; font-weight: bold; }
+        .order-cell.active { background-color: var(--btn-blue); color: white; border-color: var(--btn-blue); }
+        .order-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+        .order-action-btn { flex: 1; background-color: #ffffff; border: 1px solid var(--border-gray); color: var(--text-dark); padding: 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; cursor: pointer; min-width: 80px; }
+        .calc-summary { text-align: center; font-size: 0.9rem; font-weight: bold; color: var(--text-dark); margin-top: 10px; padding: 10px; background: #f7fafc; border-radius: 4px; }
 
-        .simple-input-container {
-            width: 200px;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .simple-input-container input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--border-gray);
-            border-radius: 4px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            background-color: var(--bg-white);
-            text-align: center;
-            outline: none;
-        }
-
-        .simple-input-container input:focus {
-            border-color: var(--btn-blue);
-            box-shadow: 0 0 0 3px rgba(24, 119, 232, 0.15);
-        }
-
-        .simple-slider {
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        .simple-result-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .simple-result-group label {
-            font-size: 1rem;
-            color: var(--text-dark);
-            font-weight: 600;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .simple-result-box {
-            width: 200px;
-            padding: 10px 15px;
-            border: 1px solid var(--border-gray);
-            border-radius: 4px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            background-color: #f7fafc;
-            text-align: center;
-            min-height: 42px;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .chart-container {
-            margin-top: 40px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .chart-title {
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-
-        .chart-legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 12px;
-            border-radius: 2px;
-        }
-
-        .chart-canvas-wrapper {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .chart-canvas-wrapper canvas {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        .simple-form-group { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9; gap: 20px; flex-wrap: wrap; }
+        .simple-form-group label { font-size: 1rem; color: var(--text-dark); font-weight: 600; flex: 1; min-width: 200px; }
+        .simple-input-container { width: 200px; position: relative; flex-shrink: 0; }
+        .simple-input-container input { width: 100%; padding: 10px 15px; border: 1px solid var(--border-gray); border-radius: 4px; font-size: 1rem; color: var(--text-dark); background-color: var(--bg-white); text-align: center; outline: none; }
+        .simple-slider { width: 100%; margin-top: 10px; cursor: pointer; }
+        .simple-result-group { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 20px; flex-wrap: wrap; }
+        .simple-result-group label { font-size: 1rem; color: var(--text-dark); font-weight: 600; flex: 1; min-width: 200px; }
+        .simple-result-box { width: 200px; padding: 10px 15px; border: 1px solid var(--border-gray); border-radius: 4px; font-size: 1rem; color: var(--text-dark); background-color: #f7fafc; text-align: center; min-height: 42px; font-weight: bold; flex-shrink: 0; }
+        .chart-container { margin-top: 40px; text-align: center; width: 100%; }
+        .chart-title { font-size: 1rem; font-weight: bold; color: var(--text-dark); margin-bottom: 15px; }
+        .chart-legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-dark); flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-color { width: 20px; height: 12px; border-radius: 2px; }
+        .chart-canvas-wrapper { width: 100%; max-width: 600px; margin: 0 auto; position: relative; }
+        .chart-canvas-wrapper canvas { max-width: 100%; height: auto; display: block; }
 
         /* =====================================================================
            RESPONSIVE DESIGN
            ===================================================================== */
+        @media (max-width: 900px) {
+            .docs-layout { flex-direction: column; gap: 20px; }
+            .docs-sidebar { width: 100%; position: static; display: none; }
+            .mobile-toc { display: block; }
+            .doc-section { padding: 25px; }
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 15px; flex-direction: column; align-items: flex-start; }
             .nav-links { flex-wrap: wrap; gap: 15px; }
-            
             .hero { padding: 30px 20px; }
             .hero-text h1 { font-size: 2rem; }
-            .hero-icon { display: none; }
-            
             .calc-container { padding: 20px; margin: 15px; }
             .form-list { grid-template-columns: 1fr; }
             .live-results { grid-template-columns: 1fr; }
             .action-buttons { grid-template-columns: 1fr; }
-            
             .raman-grid { grid-template-columns: 1fr; gap: 20px; }
             .raman-laser-row { flex-direction: column; align-items: flex-start; gap: 10px; }
             .raman-input { width: 100%; }
-            
             .grating-top-panel { grid-template-columns: 1fr; }
             .grating-middle-layout { grid-template-columns: 1fr; }
-            
             .simple-form-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-input-container { width: 100%; }
             .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-result-box { width: 100%; }
-
-            .resources-container { margin: 20px auto; padding: 0 15px; }
-            .resource-section { padding: 20px; }
         }
 
         @media (max-width: 480px) {
             .hero-text h1 { font-size: 1.6rem; }
             .calc-container { padding: 15px; margin: 10px; }
             .order-grid { grid-template-columns: repeat(4, 1fr); }
-            .equation-overview-content { padding: 15px; }
-            .equation-block { font-size: 0.95rem; }
+            .doc-section { padding: 20px 15px; }
+            .formula-panel { flex-direction: column; align-items: flex-start; }
+            .copy-btn { align-self: flex-end; }
         }
     </style>
 </head>
@@ -1014,133 +764,195 @@
             </div>
         </div>
         
-        <div class="resources-container">
-            
-            <!-- Spectrometer Section -->
-            <div class="resource-section">
-                <h2>1. Spectrometer Designer</h2>
-                <p>This calculator is used to estimate the critical optical parameters of a spectrometer based on its grating and focal length. It helps optical engineers determine the linear dispersion at the detector and the overall resolving power of the system.</p>
-                
-                <h3>Mathematical Formulas</h3>
-                <div class="formula-block">
-                    dx = f &times; (d&beta;/d&lambda;) &times; &Delta;&lambda;
-                </div>
-                <div class="formula-block">
-                    R = W &times; (d&beta;/d&lambda;)
-                </div>
-
-                <h3>Variable Definitions</h3>
-                <ul class="variable-list">
-                    <li><strong>dx</strong> Linear dispersion at the focal plane (mm)</li>
-                    <li><strong>f</strong> Focal length of the collimator/focusing mirror (mm)</li>
-                    <li><strong>d&beta;/d&lambda;</strong> Angular dispersion of the grating (rad/nm)</li>
-                    <li><strong>&Delta;&lambda;</strong> Wavelength interval being resolved (nm)</li>
-                    <li><strong>R</strong> Resolving power (dimensionless)</li>
-                    <li><strong>W</strong> Illuminated grating width (nm)</li>
-                </ul>
-                <div class="note-box">
-                    <strong>Note on Units:</strong> For resolving power (R) to be dimensionless, the illuminated width W must be expressed in the same unit as the wavelength (nanometers).
-                </div>
+        <div class="docs-layout">
+            <!-- Mobile Dropdown TOC -->
+            <div class="mobile-toc">
+                <select onchange="scrollToSection(this.value)">
+                    <option value="">Jump to section...</option>
+                    <option value="sec-spectrometer">1. Spectrometer Designer</option>
+                    <option value="sec-raman">2. Raman Waveshift</option>
+                    <option value="sec-grating">3. Grating Order</option>
+                    <option value="sec-pulse-comp">4. Pulse Compression</option>
+                    <option value="sec-pulse-tilt">5. Pulse Front Tilt</option>
+                </select>
             </div>
 
-            <!-- Raman Section -->
-            <div class="resource-section">
-                <h2>2. Raman Waveshift Converter</h2>
-                <p>Raman spectroscopy relies on the inelastic scattering of light. This calculator converts between the wavelength of scattered light (in nanometers) and the Raman shift (in wavenumbers). Positive shifts indicate Stokes scattering, while negative shifts indicate anti-Stokes scattering.</p>
+            <!-- Left Sidebar -->
+            <aside class="docs-sidebar">
+                <input type="text" id="docSearch" class="search-box" placeholder="Search formulas, calculators, or variables..." onkeyup="filterDocs()">
+                <div class="toc-nav">
+                    <h3>On this page</h3>
+                    <ul class="toc-list" id="tocList">
+                        <li><a href="#sec-spectrometer" class="active">1. Spectrometer Designer</a></li>
+                        <li><a href="#sec-raman">2. Raman Waveshift</a></li>
+                        <li><a href="#sec-grating">3. Grating Order</a></li>
+                        <li><a href="#sec-pulse-comp">4. Pulse Compression</a></li>
+                        <li><a href="#sec-pulse-tilt">5. Pulse Front Tilt</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Documentation Content -->
+            <main class="docs-content" id="docsContent">
                 
-                <h3>Mathematical Formulas</h3>
-                <div class="formula-block">
-                    &Delta;&nu;&#771; = 10<sup>7</sup> &times; (1/&lambda;<sub>0</sub> &minus; 1/&lambda;<sub>R</sub>)
-                </div>
-                <div class="formula-block">
-                    &lambda;<sub>R</sub> = 1 / (1/&lambda;<sub>0</sub> &minus; &Delta;&nu;&#771;/10<sup>7</sup>)
+                <!-- Spectrometer -->
+                <div class="doc-section" id="sec-spectrometer">
+                    <div class="doc-header">
+                        <div class="doc-icon">1</div>
+                        <h2>Spectrometer Designer</h2>
+                    </div>
+                    <p class="doc-desc">This calculator is used to estimate the critical optical parameters of a spectrometer based on its grating and focal length. It helps optical engineers determine the linear dispersion at the detector and the overall resolving power of the system.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">dx = f &times; (d&beta;/d&lambda;) &times; &Delta;&lambda;</div>
+                        <button class="copy-btn" onclick="copyFormula('dx = f * (dβ/dλ) * Δλ', this)">Copy</button>
+                    </div>
+                    <div class="formula-panel">
+                        <div class="formula-content">R = W &times; (d&beta;/d&lambda;)</div>
+                        <button class="copy-btn" onclick="copyFormula('R = W * (dβ/dλ)', this)">Copy</button>
+                    </div>
+
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">dx</span> Linear dispersion at the focal plane (mm)</div>
+                        <div class="var-item"><span class="var-symbol">f</span> Focal length of the collimator/focusing mirror (mm)</div>
+                        <div class="var-item"><span class="var-symbol">d&beta;/d&lambda;</span> Angular dispersion of the grating (rad/nm)</div>
+                        <div class="var-item"><span class="var-symbol">&Delta;&lambda;</span> Wavelength interval being resolved (nm)</div>
+                        <div class="var-item"><span class="var-symbol">R</span> Resolving power (dimensionless)</div>
+                        <div class="var-item"><span class="var-symbol">W</span> Illuminated grating width (nm)</div>
+                    </div>
+                    
+                    <div class="warning-callout">
+                        <div class="warning-icon">⚠️</div>
+                        <div><strong>Note on Units:</strong> For resolving power (R) to be dimensionless, the illuminated width W must be expressed in the same unit as the wavelength (nanometers).</div>
+                    </div>
                 </div>
 
-                <h3>Variable Definitions</h3>
-                <ul class="variable-list">
-                    <li><strong>&Delta;&nu;&#771;</strong> Raman shift (cm<sup>-1</sup>)</li>
-                    <li><strong>&lambda;<sub>0</sub></strong> Excitation laser wavelength (nm)</li>
-                    <li><strong>&lambda;<sub>R</sub></strong> Scattered light wavelength (nm)</li>
-                </ul>
-                <div class="note-box">
-                    <strong>Note on Scattering:</strong> A scattered wavelength greater than the excitation wavelength yields a positive (Stokes) shift. A wavelength smaller than the excitation yields a negative (anti-Stokes) shift.
-                </div>
-            </div>
+                <!-- Raman -->
+                <div class="doc-section" id="sec-raman">
+                    <div class="doc-header">
+                        <div class="doc-icon">2</div>
+                        <h2>Raman Waveshift Converter</h2>
+                    </div>
+                    <p class="doc-desc">Raman spectroscopy relies on the inelastic scattering of light. This calculator converts between the wavelength of scattered light (in nanometers) and the Raman shift (in wavenumbers). Positive shifts indicate Stokes scattering, while negative shifts indicate anti-Stokes scattering.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">&Delta;&nu;&#771; = 10<sup>7</sup> &times; (1/&lambda;<sub>0</sub> &minus; 1/&lambda;<sub>R</sub>)</div>
+                        <button class="copy-btn" onclick="copyFormula('Δν̃ = 10^7 * (1/λ₀ - 1/λR)', this)">Copy</button>
+                    </div>
+                    <div class="formula-panel">
+                        <div class="formula-content">&lambda;<sub>R</sub> = 1 / (1/&lambda;<sub>0</sub> &minus; &Delta;&nu;&#771;/10<sup>7</sup>)</div>
+                        <button class="copy-btn" onclick="copyFormula('λR = 1 / (1/λ₀ - Δν̃/10^7)', this)">Copy</button>
+                    </div>
 
-            <!-- Grating Section -->
-            <div class="resource-section">
-                <h2>3. Grating Order Calculator</h2>
-                <p>Diffraction gratings disperse light into multiple orders based on the grating equation. This calculator determines the diffraction angle for a specific order and wavelength, and verifies if the order is physically propagating.</p>
-                
-                <h3>Mathematical Formulas</h3>
-                <div class="formula-block">
-                    &beta; = arcsin(m&lambda;/d &minus; sin &alpha;)
-                </div>
-                <div class="formula-block">
-                    d (nm) = 10<sup>6</sup> / groove density (lines/mm)
-                </div>
-
-                <h3>Variable Definitions</h3>
-                <ul class="variable-list">
-                    <li><strong>&beta;</strong> Angle of diffraction (degrees)</li>
-                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
-                    <li><strong>m</strong> Diffraction order (integer)</li>
-                    <li><strong>&lambda;</strong> Light wavelength (nm)</li>
-                    <li><strong>d</strong> Grating period (nm)</li>
-                </ul>
-                <div class="note-box">
-                    <strong>Non-Propagating Orders:</strong> If the argument of the arcsine function is outside the range of -1 to +1, the diffraction order does not physically propagate and is rejected by the calculator.
-                </div>
-            </div>
-
-            <!-- Pulse Compression Section -->
-            <div class="resource-section">
-                <h2>4. Pulse Compression Calculator</h2>
-                <p>In ultrafast optics, grating pairs are used to compress chirped laser pulses. This calculator determines the Group Delay Dispersion (GDD) introduced by a grating pair in a double-pass configuration.</p>
-                
-                <h3>Mathematical Formulas</h3>
-                <div class="formula-block">
-                    &Phi;&#8243; = &minus;[4L&lambda;<sup>3</sup> / (2&pi;c<sup>2</sup>d<sup>2</sup>)] &times; [1 &minus; (&lambda;/d &minus; sin &alpha;)<sup>2</sup>]<sup>&minus;3/2</sup>
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">&Delta;&nu;&#771;</span> Raman shift (cm<sup>-1</sup>)</div>
+                        <div class="var-item"><span class="var-symbol">&lambda;<sub>0</sub></span> Excitation laser wavelength (nm)</div>
+                        <div class="var-item"><span class="var-symbol">&lambda;<sub>R</sub></span> Scattered light wavelength (nm)</div>
+                    </div>
+                    
+                    <div class="warning-callout">
+                        <div class="warning-icon">⚠️</div>
+                        <div><strong>Note on Scattering:</strong> A scattered wavelength greater than the excitation wavelength yields a positive (Stokes) shift. A wavelength smaller than the excitation yields a negative (anti-Stokes) shift.</div>
+                    </div>
                 </div>
 
-                <h3>Variable Definitions</h3>
-                <ul class="variable-list">
-                    <li><strong>&Phi;&#8243;</strong> Group Delay Dispersion (fs<sup>2</sup>)</li>
-                    <li><strong>L</strong> Perpendicular separation between gratings (mm)</li>
-                    <li><strong>&lambda;</strong> Center wavelength (nm)</li>
-                    <li><strong>c</strong> Speed of light (m/s)</li>
-                    <li><strong>d</strong> Grating period (nm)</li>
-                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
-                </ul>
-                <div class="note-box">
-                    <strong>Note on TOD:</strong> The calculator also provides an approximation for the Third-Order Dispersion (TOD) based on the computed GDD.
-                </div>
-            </div>
+                <!-- Grating -->
+                <div class="doc-section" id="sec-grating">
+                    <div class="doc-header">
+                        <div class="doc-icon">3</div>
+                        <h2>Grating Order Calculator</h2>
+                    </div>
+                    <p class="doc-desc">Diffraction gratings disperse light into multiple orders based on the grating equation. This calculator determines the diffraction angle for a specific order and wavelength, and verifies if the order is physically propagating.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">&beta; = arcsin(m&lambda;/d &minus; sin &alpha;)</div>
+                        <button class="copy-btn" onclick="copyFormula('β = arcsin(mλ/d - sin α)', this)">Copy</button>
+                    </div>
+                    <div class="formula-panel">
+                        <div class="formula-content">d (nm) = 10<sup>6</sup> / groove density (lines/mm)</div>
+                        <button class="copy-btn" onclick="copyFormula('d (nm) = 10^6 / groove density (lines/mm)', this)">Copy</button>
+                    </div>
 
-            <!-- Pulse Front Tilt Section -->
-            <div class="resource-section">
-                <h2>5. Pulse Front Tilt Calculator</h2>
-                <p>When a pulse passes through a diffraction grating, the pulse front becomes tilted relative to the phase front. This calculator determines the required incidence and diffraction angles to achieve a specific pulse front tilt angle.</p>
-                
-                <h3>Mathematical Formulas</h3>
-                <div class="formula-block">
-                    &gamma; = arctan[m&lambda; / (d &times; cos &beta;)]
-                </div>
-                <div class="formula-block">
-                    sin &beta; = m&lambda;/d &minus; sin &alpha;
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">&beta;</span> Angle of diffraction (degrees)</div>
+                        <div class="var-item"><span class="var-symbol">&alpha;</span> Angle of incidence (degrees)</div>
+                        <div class="var-item"><span class="var-symbol">m</span> Diffraction order (integer)</div>
+                        <div class="var-item"><span class="var-symbol">&lambda;</span> Light wavelength (nm)</div>
+                        <div class="var-item"><span class="var-symbol">d</span> Grating period (nm)</div>
+                    </div>
+
+                    <div class="warning-callout">
+                        <div class="warning-icon">⚠️</div>
+                        <div><strong>Non-Propagating Orders:</strong> If the argument of the arcsine function is outside the range of -1 to +1, the diffraction order does not physically propagate and is rejected by the calculator.</div>
+                    </div>
                 </div>
 
-                <h3>Variable Definitions</h3>
-                <ul class="variable-list">
-                    <li><strong>&gamma;</strong> Pulse front tilt angle (degrees)</li>
-                    <li><strong>&alpha;</strong> Angle of incidence (degrees)</li>
-                    <li><strong>&beta;</strong> Angle of diffraction (degrees)</li>
-                    <li><strong>m</strong> Diffraction order</li>
-                    <li><strong>&lambda;</strong> Light wavelength (nm)</li>
-                    <li><strong>d</strong> Grating period (nm)</li>
-                </ul>
-            </div>
+                <!-- Pulse Compression -->
+                <div class="doc-section" id="sec-pulse-comp">
+                    <div class="doc-header">
+                        <div class="doc-icon">4</div>
+                        <h2>Pulse Compression Calculator</h2>
+                    </div>
+                    <p class="doc-desc">In ultrafast optics, grating pairs are used to compress chirped laser pulses. This calculator determines the Group Delay Dispersion (GDD) introduced by a grating pair in a double-pass configuration.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">&Phi;&#8243; = &minus;[4L&lambda;<sup>3</sup> / (2&pi;c<sup>2</sup>d<sup>2</sup>)] &times; [1 &minus; (&lambda;/d &minus; sin &alpha;)<sup>2</sup>]<sup>&minus;3/2</sup></div>
+                        <button class="copy-btn" onclick="copyFormula('Φ″ = −[4Lλ³ / (2πc²d²)] × [1 − (λ/d − sin α)²]^(−3/2)', this)">Copy</button>
+                    </div>
 
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">&Phi;&#8243;</span> Group Delay Dispersion (fs<sup>2</sup>)</div>
+                        <div class="var-item"><span class="var-symbol">L</span> Perpendicular separation between gratings (mm)</div>
+                        <div class="var-item"><span class="var-symbol">&lambda;</span> Center wavelength (nm)</div>
+                        <div class="var-item"><span class="var-symbol">c</span> Speed of light (m/s)</div>
+                        <div class="var-item"><span class="var-symbol">d</span> Grating period (nm)</div>
+                        <div class="var-item"><span class="var-symbol">&alpha;</span> Angle of incidence (degrees)</div>
+                    </div>
+
+                    <div class="warning-callout">
+                        <div class="warning-icon">⚠️</div>
+                        <div><strong>Note on TOD:</strong> The calculator also provides an approximation for the Third-Order Dispersion (TOD) based on the computed GDD.</div>
+                    </div>
+                </div>
+
+                <!-- Pulse Front Tilt -->
+                <div class="doc-section" id="sec-pulse-tilt">
+                    <div class="doc-header">
+                        <div class="doc-icon">5</div>
+                        <h2>Pulse Front Tilt Calculator</h2>
+                    </div>
+                    <p class="doc-desc">When a pulse passes through a diffraction grating, the pulse front becomes tilted relative to the phase front. This calculator determines the required incidence and diffraction angles to achieve a specific pulse front tilt angle.</p>
+                    
+                    <h3 class="doc-subheading">Mathematical Formulas</h3>
+                    <div class="formula-panel">
+                        <div class="formula-content">&gamma; = arctan[m&lambda; / (d &times; cos &beta;)]</div>
+                        <button class="copy-btn" onclick="copyFormula('γ = arctan[mλ / (d × cos β)]', this)">Copy</button>
+                    </div>
+                    <div class="formula-panel">
+                        <div class="formula-content">sin &beta; = m&lambda;/d &minus; sin &alpha;</div>
+                        <button class="copy-btn" onclick="copyFormula('sin β = mλ/d − sin α', this)">Copy</button>
+                    </div>
+
+                    <h3 class="doc-subheading">Variable Definitions</h3>
+                    <div class="var-grid">
+                        <div class="var-item"><span class="var-symbol">&gamma;</span> Pulse front tilt angle (degrees)</div>
+                        <div class="var-item"><span class="var-symbol">&alpha;</span> Angle of incidence (degrees)</div>
+                        <div class="var-item"><span class="var-symbol">&beta;</span> Angle of diffraction (degrees)</div>
+                        <div class="var-item"><span class="var-symbol">m</span> Diffraction order</div>
+                        <div class="var-item"><span class="var-symbol">&lambda;</span> Light wavelength (nm)</div>
+                        <div class="var-item"><span class="var-symbol">d</span> Grating period (nm)</div>
+                    </div>
+                </div>
+
+            </main>
         </div>
     </div>
 
@@ -1154,7 +966,7 @@
                     <h1 id="calcHeroTitle" style="font-size: 2.2rem;">Calculator</h1>
                     <div class="breadcrumb">Home / Calculators / <span id="calcBreadcrumb">Active</span></div>
                 </div>
-                <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.8; width: 80px; height: 80px; flex-shrink: 0;">
                     <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
                     <line x1="8" y1="6" x2="16" y2="6"></line>
                     <line x1="16" y1="14" x2="16.01" y2="14"></line>
@@ -1168,7 +980,7 @@
         </div>
 
         <div class="calc-container">
-            <div class="back-btn-container">
+            <div class="back-btn-container" style="margin-bottom: 20px;">
                 <button class="btn btn-small" style="background: white; color: var(--text-dark); border: 1px solid var(--border-gray); box-shadow: none;" onclick="navigateBack()">&larr; Back to Calculators</button>
             </div>
             
@@ -2265,8 +2077,77 @@
             showFeedback('✓ CSV exported.', 'success');
         }
 
+
         // =====================================================================
-        // SECTION 7: INITIALIZATION
+        // SECTION 7: DOCUMENTATION SPECIFIC LOGIC (Search, TOC, Copy)
+        // =====================================================================
+        
+        // Copy formula function
+        function copyFormula(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.textContent;
+                btnElement.textContent = 'Copied!';
+                btnElement.style.color = 'var(--success-text)';
+                btnElement.style.borderColor = 'var(--success-bg)';
+                
+                setTimeout(() => {
+                    btnElement.textContent = originalText;
+                    btnElement.style.color = '';
+                    btnElement.style.borderColor = '';
+                }, 2000);
+            }).catch(err => {
+                btnElement.textContent = 'Failed';
+                setTimeout(() => btnElement.textContent = 'Copy', 2000);
+            });
+        }
+
+        // Scroll to section from mobile dropdown
+        function scrollToSection(id) {
+            if (!id) return;
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Search filter logic
+        function filterDocs() {
+            const query = document.getElementById('docSearch').value.toLowerCase();
+            const sections = document.querySelectorAll('.doc-section');
+            
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Highlight active TOC link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.doc-section');
+            const tocLinks = document.querySelectorAll('.toc-list a');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // =====================================================================
+        // SECTION 8: INITIALIZATION
         // =====================================================================
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
