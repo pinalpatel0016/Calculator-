@@ -31,6 +31,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         * { box-sizing: border-box; }
@@ -43,6 +44,8 @@
             padding: 15px 40px;
             border-bottom: 1px solid var(--border-gray);
             background-color: var(--bg-white);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .nav-brand {
@@ -58,6 +61,7 @@
             margin: 0;
             padding: 0;
             gap: 25px;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -67,6 +71,7 @@
             padding-bottom: 5px;
             cursor: pointer;
             transition: color 0.2s;
+            white-space: nowrap;
         }
 
         .nav-links a:hover { color: var(--text-dark); }
@@ -94,6 +99,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .hero-text h1 {
@@ -101,6 +108,7 @@
             margin: 0 0 10px 0;
             font-weight: 700;
             letter-spacing: -0.5px;
+            word-wrap: break-word;
         }
 
         .breadcrumb {
@@ -399,6 +407,7 @@
             font-size: 1rem;
             color: var(--text-dark);
             width: 150px;
+            max-width: 100%;
             outline: none;
         }
         .raman-input:focus {
@@ -435,6 +444,8 @@
             align-items: center;
             font-size: 1rem;
             color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         /* --- Custom Grating Calculator Layout --- */
@@ -801,6 +812,7 @@
         .chart-container {
             margin-top: 40px;
             text-align: center;
+            width: 100%;
         }
 
         .chart-title {
@@ -838,6 +850,11 @@
             position: relative;
         }
 
+        .chart-canvas-wrapper canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
         /* --- RESPONSIVE DESIGN --- */
         
         @media (max-width: 1024px) {
@@ -848,38 +865,47 @@
         }
 
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; padding: 15px; gap: 15px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .navbar { padding: 15px; flex-direction: column; align-items: flex-start; }
+            .nav-links { flex-wrap: wrap; gap: 15px; }
+            
             .hero { padding: 30px 20px; }
             .hero-text h1 { font-size: 2rem; }
             .hero-icon { display: none; }
             
-            .grid-container { grid-template-columns: 1fr; }
+            /* Grid collapses */
+            .grid-container { grid-template-columns: 1fr; margin: 20px auto; }
+            .calc-container { padding: 20px; margin: 15px; }
+            
+            /* Forms stack to full width */
             .form-list { grid-template-columns: 1fr; }
             .action-buttons { grid-template-columns: 1fr; }
+            .live-results { grid-template-columns: 1fr; }
             
+            /* Raman stacks */
             .raman-grid { grid-template-columns: 1fr; gap: 20px; }
-            .raman-laser-row { flex-direction: column; align-items: flex-start; }
+            .raman-laser-row { flex-direction: column; align-items: flex-start; gap: 10px; }
             .raman-input { width: 100%; }
+            .raman-row { flex-direction: column; align-items: flex-start; gap: 5px; }
             
+            /* Grating stacks */
             .grating-top-panel { grid-template-columns: 1fr; }
             
+            /* Pulse layouts stack */
             .simple-form-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-input-container { width: 100%; }
             
             .simple-result-group { flex-direction: column; align-items: flex-start; gap: 10px; }
             .simple-result-box { width: 100%; }
-            
-            .live-results { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
             .hero-text h1 { font-size: 1.6rem; }
             .calc-container { padding: 15px; margin: 10px; }
-            .order-grid { grid-template-columns: repeat(4, 1fr); }
-            .order-cell { font-size: 0.65rem; padding: 4px 1px; }
+            /* Order grid needs to be flexible to avoid squishing */
+            .order-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+            .order-cell { font-size: 0.65rem; padding: 6px 2px; }
             .equation-overview-content { padding: 15px; }
-            .equation-block { font-size: 1rem; }
+            .equation-block { font-size: 0.95rem; }
         }
     </style>
 </head>
